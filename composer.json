@@ -1,0 +1,33 @@
+{
+  "name": "haxibiao/cms",
+  "description": "哈希表CMS",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ivan",
+      "email": "ivan@haxibiao.com"
+    }
+  ],
+  "require": {},
+  "repositories": {},
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-0": {
+      "Haxibiao\\Cms\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests/"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Haxibiao\\Cms\\CmsServiceProvider"
+      ],
+      "aliases": {}
+    }
+  }
+}
