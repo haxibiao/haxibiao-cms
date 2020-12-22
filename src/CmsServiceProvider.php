@@ -4,6 +4,7 @@ namespace Haxibiao\Cms;
 
 use Haxibiao\Cms\Console\Commands\SitemapGenerate;
 use Haxibiao\Cms\Console\InstallCommand;
+use Haxibiao\Cms\Http\Middleware\SeoTraffic;
 use Illuminate\Support\ServiceProvider;
 
 class CmsServiceProvider extends ServiceProvider
@@ -19,7 +20,7 @@ class CmsServiceProvider extends ServiceProvider
 
         //加载帮助函数
         $src_path = __DIR__;
-        foreach (glob($src_path . '/helpers/*.php') as $filename) {
+        foreach (glob($src_path . '/Helper/*.php') as $filename) {
             require_once $filename;
         }
 
@@ -37,6 +38,9 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //中间件
+        app('router')->pushMiddlewareToGroup('web', SeoTraffic::class);
+
         //加载路由
         $this->loadRoutesFrom(
             $this->app->make('path.haxibiao-cms') . '/router.php'
@@ -45,6 +49,11 @@ class CmsServiceProvider extends ServiceProvider
         //合并配置
         if (!app()->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__ . '/../config/cms.php', 'cms');
+        }
+
+        //安装时需要
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom($this->app->make('path.haxibiao-cms.migrations'));
         }
     }
 

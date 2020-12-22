@@ -13,14 +13,14 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'config:install';
+    protected $signature = 'cms:install';
 
     /**
      * The Console command description.
      *
      * @var string
      */
-    protected $description = '安装 haxibiao/config';
+    protected $description = '安装 haxibiao/cms';
 
     /**
      * Execute the Console command.
@@ -29,9 +29,11 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-
-        $this->comment('复制 stubs ...');
+        $this->info('复制 stubs ...');
         $this->copyStubs();
+
+        $this->info('迁移数据库变化...');
+        $this->call('migrate');
     }
 
     public function copyStubs()
@@ -41,7 +43,6 @@ class InstallCommand extends Command
             $filename = basename($filepath);
             copy($filepath, app_path(str_replace(".stub", ".php", $filename)));
         }
-
         //复制所有nova stubs
         if (!is_dir(app_path('Nova'))) {
             mkdir(app_path('Nova'));

@@ -10,6 +10,7 @@
 
 1. haxibiao-config 系统配置，APP+ASO 配置，SEO 配置，广告配置
 2. haxibiao-content 内容分配到站群
+3. haxibiao-dimension 维度分析报表系统
 
 ## 安装步骤
 

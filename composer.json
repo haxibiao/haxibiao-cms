@@ -10,8 +10,10 @@
     }
   ],
   "require": {
+    "jenssegers/agent": "^2.6",
     "haxibiao/config": "*",
-    "haxibiao/content": "*"
+    "haxibiao/content": "*",
+    "haxibiao/dimension": "*"
   },
   "repositories": {
     "config": {
@@ -21,6 +23,10 @@
     "content": {
       "type": "vcs",
       "url": "http://code.haxibiao.cn/packages/haxibiao-content.git"
+    },
+    "dimension": {
+      "type": "vcs",
+      "url": "http://code.haxibiao.cn/packages/haxibiao-dimension.git"
     }
   },
   "minimum-stability": "dev",
