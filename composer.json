@@ -9,8 +9,20 @@
       "email": "ivan@haxibiao.com"
     }
   ],
-  "require": {},
-  "repositories": {},
+  "require": {
+    "haxibiao/config": "*",
+    "haxibiao/content": "*"
+  },
+  "repositories": {
+    "config": {
+      "type": "vcs",
+      "url": "http://code.haxibiao.cn/packages/haxibiao-config.git"
+    },
+    "content": {
+      "type": "vcs",
+      "url": "http://code.haxibiao.cn/packages/haxibiao-content.git"
+    }
+  },
   "minimum-stability": "dev",
   "autoload": {
     "psr-0": {

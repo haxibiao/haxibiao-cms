@@ -1,9 +1,9 @@
 <?php
 
-namespace Haxibiao\Config;
+namespace Haxibiao\Cms;
 
-use Haxibiao\Config\Console\InstallCommand;
-use Illuminate\Config\Repository as Config;
+use Haxibiao\Cms\Console\Commands\SitemapGenerate;
+use Haxibiao\Cms\Console\InstallCommand;
 use Illuminate\Support\ServiceProvider;
 
 class CmsServiceProvider extends ServiceProvider
@@ -15,6 +15,9 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->bindPathsInContainer();
+
+        //加载帮助函数
         $src_path = __DIR__;
         foreach (glob($src_path . '/helpers/*.php') as $filename) {
             require_once $filename;
@@ -23,6 +26,7 @@ class CmsServiceProvider extends ServiceProvider
         // Register Commands
         $this->commands([
             InstallCommand::class,
+            SitemapGenerate::class,
         ]);
     }
 
@@ -33,8 +37,28 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (!$this->app->configurationIsCached()) {
+        //加载路由
+        $this->loadRoutesFrom(
+            $this->app->make('path.haxibiao-cms') . '/router.php'
+        );
+
+        //合并配置
+        if (!app()->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__ . '/../config/cms.php', 'cms');
+        }
+    }
+
+    protected function bindPathsInContainer()
+    {
+        foreach ([
+            'path.haxibiao-cms'            => $root = dirname(__DIR__),
+            'path.haxibiao-cms.config'     => $root . '/config',
+            'path.haxibiao-cms.database'   => $database = $root . '/database',
+            'path.haxibiao-cms.migrations' => $database . '/migrations',
+            'path.haxibiao-cms.seeders'    => $database . '/seeders',
+            'path.haxibiao-cms.graphql'    => $root . '/graphql',
+        ] as $abstract => $instance) {
+            $this->app->instance($abstract, $instance);
         }
     }
 }
