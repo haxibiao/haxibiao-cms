@@ -11,11 +11,11 @@ Route::get('/logclear', 'LogController@logClear');
 Route::get('/debug', 'LogController@debug');
 
 /**
- * 站点管理
+ * 站点seo管理
  */
-Route::group(['prefix' => 'site'], function (RouteRegisterContract $route) {
-    // //管理专题
-    // Route::get('/list', CategoryController::class . '@list');
+Route::group(['prefix' => 'seo'], function (RouteRegisterContract $route) {
+    // 百度收录查询
+    Route::get('/baidu/include', SeoController::class . '@baiduInclude');
 });
 
 //站点地图索引
