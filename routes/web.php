@@ -18,5 +18,7 @@ Route::group(['prefix' => 'site'], function (RouteRegisterContract $route) {
     // Route::get('/list', CategoryController::class . '@list');
 });
 
-//返回索引型站点地图
+//站点地图索引
 Route::get('/sitemap', SitemapController::class . '@index');
+//单个地图
+Route::get('/sitemap/{name_en}', SitemapController::class . '@name_en');

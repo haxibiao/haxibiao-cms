@@ -6,7 +6,6 @@ use App\Category;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Sitemap\SitemapGenerator;
 use Spatie\Sitemap\SitemapIndex;
 use Spatie\Sitemap\Tags\Sitemap;
@@ -76,7 +75,7 @@ class SitemapGenerate extends Command
             }
 
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = Storage::disk('public')->path($relativePath);
+            $path = public_path("storage/" . $relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
@@ -108,7 +107,7 @@ class SitemapGenerate extends Command
                 );
             }
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = Storage::disk('public')->path($relativePath);
+            $path = public_path("storage/" . $relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
@@ -138,7 +137,7 @@ class SitemapGenerate extends Command
                 );
             }
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = Storage::disk('public')->path($relativePath);
+            $path = public_path("storage/" . $relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
@@ -173,7 +172,7 @@ class SitemapGenerate extends Command
                 );
             }
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = Storage::disk('public')->path($relativePath);
+            $path = public_path("storage/" . $relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
@@ -206,7 +205,7 @@ class SitemapGenerate extends Command
                 );
             }
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = Storage::disk('public')->path($relativePath);
+            $path = public_path("storage/" . $relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
