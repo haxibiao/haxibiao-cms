@@ -21,7 +21,15 @@ class SeoTraffic
         //蜘蛛抓取
         if (Agent::isRobot()) {
             $bot = strtolower(Agent::robot());
-            if (str_contains($bot, 'baidu') || str_contains($bot, 'google')) {
+            if (str_contains($bot, 'baidu') ||
+                str_contains($bot, 'google') ||
+                str_contains($bot, 'qihoo') ||
+                str_contains($bot, '360') ||
+                str_contains($bot, 'sogou') ||
+                str_contains($bot, 'shenma') ||
+                str_contains($bot, 'toutiao') ||
+                str_contains($bot, 'byte')
+            ) {
                 $traffic['bot'] = $bot;
             }
         }
@@ -35,11 +43,22 @@ class SeoTraffic
             if (str_contains($referer, 'google.com')) {
                 $engine = 'google';
             }
+            if (str_contains($referer, '360.cn')) {
+                $engine = '360';
+            }
+            if (str_contains($referer, 'sogou')) {
+                $engine = 'sogou';
+            }
+            if (str_contains($referer, 'shenma')) {
+                $engine = 'shenma';
+            }
+            if (str_contains($referer, 'toutiao')) {
+                $engine = 'toutiao';
+            }
             if (isset($engine)) {
                 $traffic['engine']  = $engine;
                 $traffic['referer'] = $referer;
             }
-
         }
 
         //如果seo有效流量
