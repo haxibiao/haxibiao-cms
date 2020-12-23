@@ -8,7 +8,7 @@ use Laravel\Nova\Metrics\Partition;
 
 class TrafficPartition extends Partition
 {
-    public $name = '搜索流量来源 (今日)';
+    public $name = '搜索来量 (今日)';
     /**
      * Calculate the value of the metric.
      *
@@ -17,9 +17,9 @@ class TrafficPartition extends Partition
      */
     public function calculate(Request $request)
     {
-        $qb = Dimension::whereGroup('广告点击')
-            ->where('date', '>=', today()->toDateString());
-        return $this->sum($request, $qb, 'value', 'name');
+        $qb = Dimension::whereNotNull('engine')
+            ->where('created_at', '>=', today()->toDateString());
+        return $this->count($request, $qb, 'engine');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Haxibiao\Cms\Nova\Metrics;
 
-use Haxibiao\Dimension\Dimension;
+use Haxibiao\Cms\Model\Traffic;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 
@@ -17,9 +17,8 @@ class SpiderTrend extends Trend
      */
     public function calculate(Request $request)
     {
-        $qb = Dimension::whereGroup('广告点击');
-
-        $result = $this->sumByDays($request, $qb, 'value', 'date');
+        $qb     = Traffic::whereNotNull('bot');
+        $result = $this->countByDays($request, $qb);
         $arr    = $result->trend;
         array_pop($arr);
         $yesterday = last($arr);

@@ -2,7 +2,7 @@
 
 namespace Haxibiao\Cms\Nova\Metrics;
 
-use Haxibiao\Dimension\Dimension;
+use Haxibiao\Cms\Model\Traffic;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 
@@ -17,9 +17,9 @@ class SpiderPartition extends Partition
      */
     public function calculate(Request $request)
     {
-        $qb = Dimension::whereGroup('广告点击')
-            ->where('date', '>=', today()->toDateString());
-        return $this->sum($request, $qb, 'value', 'name');
+        $qb = Traffic::whereNotNull('bot')
+            ->where('created_at', '>=', today()->toDateString());
+        return $this->count($request, $qb, 'bot');
     }
 
     /**
