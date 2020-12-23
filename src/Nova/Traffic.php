@@ -3,6 +3,7 @@
 namespace Haxibiao\Cms\Nova;
 
 use App\Nova\Resource;
+use Haxibiao\Cms\Nova\Metrics\SiteSpiderPartition;
 use Haxibiao\Cms\Nova\Metrics\SiteTrafficPartition;
 use Haxibiao\Cms\Nova\Metrics\SpiderPartition;
 use Haxibiao\Cms\Nova\Metrics\SpiderTrend;
@@ -80,6 +81,7 @@ class Traffic extends Resource
             (new TrafficPartition)->width('1/4'),
             (new TrafficTrend)->width('1/4'),
             (new SiteTrafficPartition)->width('1/4'),
+            (new SiteSpiderPartition)->width('1/4'),
         ];
     }
 
