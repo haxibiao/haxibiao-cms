@@ -39,6 +39,6 @@ class SiteTrafficPartition extends Partition
      */
     public function uriKey()
     {
-        return 'spider-partition';
+        return 'site-traffic-partition';
     }
 }

@@ -39,6 +39,6 @@ class TrafficPartition extends Partition
      */
     public function uriKey()
     {
-        return 'spider-partition';
+        return 'traffic-partition';
     }
 }

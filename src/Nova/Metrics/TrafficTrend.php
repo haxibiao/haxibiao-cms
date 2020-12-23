@@ -59,6 +59,6 @@ class TrafficTrend extends Trend
      */
     public function uriKey()
     {
-        return 'spider-trend';
+        return 'traffic-trend';
     }
 }
