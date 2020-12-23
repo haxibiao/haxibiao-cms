@@ -20,5 +20,6 @@ Route::group(['prefix' => 'seo'], function (RouteRegisterContract $route) {
 
 //站点地图索引
 Route::get('/sitemap', SitemapController::class . '@index');
+Route::get('/sitemap.xml', SitemapController::class . '@index');
 //单个地图
 Route::get('/sitemap/{name_en}', SitemapController::class . '@name_en');
