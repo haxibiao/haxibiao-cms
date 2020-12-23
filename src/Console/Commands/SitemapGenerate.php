@@ -13,7 +13,7 @@ use Spatie\Sitemap\Tags\Url;
 use wapmorgan\UnifiedArchive\UnifiedArchive;
 
 /**
- *  一个sitemap文件最多5w个链接,所有sitmap文件大家加起来不能超过50M
+ *  一个sitemap文件先只1000个最新链接,开始打得通百度收录关先
  *
  */
 class SitemapGenerate extends Command
@@ -26,9 +26,11 @@ class SitemapGenerate extends Command
     {
         $domain             = $this->option('domain');
         $neihanSitesDomains = array_keys(neihan_sites_domains());
+        //单个域名
         if ($domain) {
             return $this->generateSingleSitemap($domain);
         }
+        //全部站群
         foreach ($neihanSitesDomains as $neihanSitesDomain) {
             $this->generateSingleSitemap($neihanSitesDomain);
         }
@@ -58,8 +60,11 @@ class SitemapGenerate extends Command
         $siteMapIndexUrls = [];
         $mi               = 0;
 
-        DB::table('movies')->select(['id'])
-            ->orderBy('id', 'desc')->chunk(10000, function ($movies) use (&$mi, &$siteMapIndexUrls, $domain) {
+        $qb = DB::table('movies')->select(['id'])
+            ->orderBy('id', 'desc');
+        //先只提交前1000个
+        $qb = $qb->where('id', '<=', 1000);
+        $qb->chunk(10000, function ($movies) use (&$mi, &$siteMapIndexUrls, $domain) {
             $fileName     = 'movie_' . $mi . '.xml';
             $gzFileName   = $fileName . '.gz';
             $relativePath = 'sitemap/' . $domain . '/' . $fileName;
@@ -90,9 +95,11 @@ class SitemapGenerate extends Command
     {
         $siteMapIndexUrls = [];
         $qi               = 0;
-        DB::table('issues')->select(['id'])
-            ->whereNull('deleted_at')
-            ->orderBy('id', 'desc')->chunk(10000, function ($questions) use (&$qi, &$siteMapIndexUrls, $domain) {
+        $qb               = DB::table('issues')->select(['id'])
+            ->whereNull('deleted_at');
+        //先只提交前1000个
+        $qb = $qb->where('id', '<=', 1000);
+        $qb->orderBy('id', 'desc')->chunk(10000, function ($questions) use (&$qi, &$siteMapIndexUrls, $domain) {
             $fileName     = 'question_' . $qi . '.xml';
             $gzFileName   = $fileName . '.gz';
             $relativePath = 'sitemap/' . $domain . '/' . $fileName;
@@ -122,7 +129,10 @@ class SitemapGenerate extends Command
     {
         $siteMapIndexUrls = [];
         $ci               = 0;
-        Category::where('status', 1)->where('count', '>', 0)->chunk(10000, function ($categories) use (&$ci, &$siteMapIndexUrls, $domain) {
+        $qb               = Category::where('status', 1)->where('count', '>', 0);
+        //先只提交前1000个
+        $qb = $qb->where('id', '<=', 1000);
+        $qb->chunk(10000, function ($categories) use (&$ci, &$siteMapIndexUrls, $domain) {
             $fileName     = 'category_' . $ci . '.xml';
             $gzFileName   = $fileName . '.gz';
             $relativePath = 'sitemap/' . $domain . '/' . $fileName;
@@ -153,10 +163,12 @@ class SitemapGenerate extends Command
     {
         $siteMapIndexUrls = [];
         $ai               = 0;
-        DB::table('articles')->select(['id'])
+        $qb               = DB::table('articles')->select(['id'])
             ->where('status', 1)
-            ->whereNull('deleted_at')
-            ->whereIn('type', ['article', 'diagrams'])->orderBy('id', 'desc')->chunk(10000, function ($articles) use (&$ai, &$siteMapIndexUrls, $domain) {
+            ->whereIn('type', ['article', 'diagrams'])->orderBy('id', 'desc');
+        //先只提交前1000个
+        $qb = $qb->where('id', '<=', 1000);
+        $qb->chunk(10000, function ($articles) use (&$ai, &$siteMapIndexUrls, $domain) {
 
             $fileName     = 'article_' . $ai . '.xml';
             $gzFileName   = $fileName . '.gz';
@@ -188,9 +200,13 @@ class SitemapGenerate extends Command
     {
         $siteMapIndexUrls = [];
         $vi               = 0;
-        DB::table('posts')->select(['video_id'])->whereNull('deleted_at')
+        $qb               = DB::table('posts')->select(['video_id'])
             ->whereStatus(1)
-            ->orderBy('id', 'desc')->chunk(20000, function ($videos) use (&$vi, &$siteMapIndexUrls, $domain) {
+            ->orderBy('id', 'desc');
+        //先只提交前1000个
+        $qb = $qb->where('id', '<=', 1000);
+
+        $qb->chunk(20000, function ($videos) use (&$vi, &$siteMapIndexUrls, $domain) {
             $fileName     = 'video_' . $vi . '.xml';
             $gzFileName   = $fileName . '.gz';
             $relativePath = 'sitemap/' . $domain . '/' . $fileName;
