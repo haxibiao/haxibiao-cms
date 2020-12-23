@@ -2,13 +2,13 @@
 
 namespace Haxibiao\Cms\Nova\Metrics;
 
-use Haxibiao\Cms\Model\Traffic;
+use App\Traffic;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 
-class TrafficPartition extends Partition
+class SiteTrafficPartition extends Partition
 {
-    public $name = '搜索来量 (今日)';
+    public $name = '站点流量 (今日)';
     /**
      * Calculate the value of the metric.
      *
@@ -17,9 +17,9 @@ class TrafficPartition extends Partition
      */
     public function calculate(Request $request)
     {
-        $qb = Traffic::whereNotNull('engine')
+        $qb = Traffic::query()
             ->where('created_at', '>=', today()->toDateString());
-        return $this->count($request, $qb, 'engine');
+        return $this->count($request, $qb, 'domain');
     }
 
     /**

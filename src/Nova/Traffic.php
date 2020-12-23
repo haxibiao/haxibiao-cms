@@ -3,11 +3,13 @@
 namespace Haxibiao\Cms\Nova;
 
 use App\Nova\Resource;
+use Haxibiao\Cms\Nova\Metrics\SiteTrafficPartition;
 use Haxibiao\Cms\Nova\Metrics\SpiderPartition;
 use Haxibiao\Cms\Nova\Metrics\SpiderTrend;
 use Haxibiao\Cms\Nova\Metrics\TrafficPartition;
 use Haxibiao\Cms\Nova\Metrics\TrafficTrend;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
@@ -56,8 +58,11 @@ class Traffic extends Resource
         return [
             ID::make()->sortable(),
             Text::make('URL', 'url'),
+            Text::make('站点', 'domain')->hideFromIndex(),
             Text::make('蜘蛛', 'bot'),
             Text::make('引擎', 'engine'),
+            Text::make('来源URL', 'referer')->hideFromIndex(),
+            DateTime::make('时间', 'created_at'),
         ];
     }
 
@@ -74,6 +79,7 @@ class Traffic extends Resource
             (new SpiderTrend)->width('1/4'),
             (new TrafficPartition)->width('1/4'),
             (new TrafficTrend)->width('1/4'),
+            (new SiteTrafficPartition)->width('1/4'),
         ];
     }
 
