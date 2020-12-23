@@ -21,7 +21,7 @@ class SeoTraffic
         //蜘蛛抓取
         if (Agent::isRobot()) {
             $bot = strtolower(Agent::robot());
-            if (in_array($bot, ['baidu', 'google'])) {
+            if (str_contains($bot, 'baidu') || str_contains($bot, 'google')) {
                 $traffic['bot'] = $bot;
             }
         }
