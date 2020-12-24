@@ -2,7 +2,7 @@
 namespace Haxibiao\Cms\Traits;
 
 use App\Siteable;
-use Haxibiao\Cms\Model\Site;
+use Haxibiao\Cms\Site;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait PlayWithCms

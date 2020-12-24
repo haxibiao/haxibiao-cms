@@ -2,7 +2,7 @@
 
 namespace Haxibiao\Cms\Nova\Actions;
 
-use Haxibiao\Cms\Model\Site;
+use Haxibiao\Cms\Site;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -39,6 +39,7 @@ class AssignToSite extends Action
 
         $site = Site::findOrFail($fields->site_id);
 
+        $pushed_count = 0;
         DB::beginTransaction();
         try {
             $urls = [];
@@ -47,23 +48,27 @@ class AssignToSite extends Action
                 $urls[] = $model->url;
             }
             //提交百度收录
-            if ($site->token) {
-                if (push_baidu($urls, $site->token, $site->domain)) {
+            if ($site->ziyuan_token) {
+                if (push_baidu($urls, $site->ziyuan_token, $site->domain)) {
                     //提交收录成功，记录时间
                     foreach ($models as $model) {
                         $model->update(['baidu_pushed_at' => now()]);
+                        ++$pushed_count;
                     }
                 }
             }
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             DB::rollBack();
-            return Action::danger('数据批量变更失败，数据回滚');
+            $msg = '数据批量变更失败，数据回滚';
+            if (!is_prod_env()) {
+                $msg .= $e->getMessage();
+            }
+            return Action::danger($msg);
         }
         DB::commit();
 
-        return Action::message('修改成功!,成功修改掉' . count($models) . '条数据');
+        return Action::message('修改成功!,百度提交成功' . $pushed_count . '条');
     }
 
     /**
@@ -73,14 +78,12 @@ class AssignToSite extends Action
      */
     public function fields()
     {
+        $siteOptions = [];
+        foreach (Site::all() as $site) {
+            $siteOptions[$site->id] = $site->name . "(" . $site->domain . ")";
+        }
         return [
-            Select::make('站点', 'site_id')->options(
-                [
-                    1 => 'diudie.com',
-                    2 => 'caohan.com',
-                    3 => 'dianmoge.com',
-                ]
-            ),
+            Select::make('站点', 'site_id')->options($siteOptions),
         ];
     }
 }

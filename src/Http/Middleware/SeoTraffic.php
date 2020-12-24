@@ -3,7 +3,7 @@
 namespace Haxibiao\Cms\Http\Middleware;
 
 use Closure;
-use Haxibiao\Cms\Model\Traffic;
+use Haxibiao\Cms\Traffic;
 use Jenssegers\Agent\Facades\Agent;
 
 class SeoTraffic

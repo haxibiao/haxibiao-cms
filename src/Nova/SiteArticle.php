@@ -12,29 +12,27 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource;
 
 class SiteArticle extends Resource
 {
-    public static $model = 'App\\Article';
-
-    public static $title = 'title';
-
-    public static $group = '站群SEO';
-
+    public static $group  = 'CMS站群';
+    public static $model  = 'Haxibiao\Cms\Article';
+    public static $title  = 'title';
     public static $with   = ['user', 'category', 'video'];
     public static $search = [
         'id', 'title',
     ];
-
     public static function label()
     {
-        return "动态";
+        return "文章";
     }
 
-    public static function singularLabel()
+    //过滤草稿状态的
+    public static function indexQuery(NovaRequest $request, $query)
     {
-        return "动态";
+        return $query->whereStatus(1);
     }
 
     public function fields(Request $request)
@@ -50,9 +48,7 @@ class SiteArticle extends Resource
                 return $this->comments()->count();
             })->hideWhenCreating(),
             Text::make('点赞数', 'count_likes')->hideWhenCreating(),
-            Text::make('用户支付的奖金', function () {
-                return $this->issue ? $this->issue->gold : "";
-            }),
+
             Textarea::make('文章内容', 'body')->rules('required')->hideFromIndex(),
             Select::make('状态', 'status')->options([
                 1  => '公开',
@@ -103,12 +99,7 @@ class SiteArticle extends Resource
 
     public function filters(Request $request)
     {
-        return [
-            // new Filters\Article\ArticleType,
-            // new Filters\Article\ArticleStatusType,
-            // new ArticleSource,
-            // new ArticleSubmitFilter,
-        ];
+        return [];
     }
 
     public function lenses(Request $request)

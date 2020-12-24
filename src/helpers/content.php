@@ -1,0 +1,63 @@
+<?php
+
+use App\Article;
+use App\Category;
+
+/**
+ * 首页置顶电影(站群)
+ */
+function cmsTopMovies($top = 4)
+{
+    //站群模式
+    if (config('cms.multi_domains')) {
+        if ($site = cms_get_site()) {
+            return $site->movies()->take($top)->get();
+        }
+    }
+    return indexTopMovies($top);
+}
+
+/**
+ * 首页置顶视频(站群)
+ */
+function cmsTopVideos($top = 4)
+{
+    //站群模式
+    if (config('cms.multi_domains')) {
+        if ($site = cms_get_site()) {
+            return $site->posts()->has('video')->take($top)->get();
+        }
+    }
+    return indexTopVideos($top);
+}
+
+/**
+ * 首页的专题(站群)
+ * @return [category] [前几个专题的数组]
+ */
+function cmsTopCategories($top = 7)
+{
+    //站群模式
+    if (config('cms.multi_domains')) {
+        indexTopCategories($top);
+    }
+    return indexTopCategories($top);
+}
+
+/**
+ * 首页的文章列表(站群)
+ * @return collection([article]) 包含分页信息和移动ＶＵＥ等优化的文章列表
+ */
+function cmsTopArticles()
+{
+    //站群模式
+    if (config('cms.multi_domains')) {
+        $site = cms_get_site();
+        $qb   = $site->articles()
+            ->exclude(['body', 'json'])
+            ->latest('siteables.updated_at');
+        return smartPager($qb);
+    } else {
+        return indexArticles();
+    }
+}

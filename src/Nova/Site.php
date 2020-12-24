@@ -3,6 +3,7 @@
 namespace Haxibiao\Cms\Nova;
 
 use App\Nova\Resource;
+use App\Nova\SitePost;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphedByMany;
@@ -10,11 +11,7 @@ use Laravel\Nova\Fields\Text;
 
 class Site extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
+    public static $group = 'CMS站群';
     public static $model = 'App\Site';
     public static function label()
     {
@@ -24,7 +21,6 @@ class Site extends Resource
     {
         return "站点";
     }
-    public static $group = '站群SEO';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -54,10 +50,25 @@ class Site extends Resource
             ID::make()->sortable(),
             Text::make('名称', 'name'),
             Text::make('域名', 'domain'),
-            Text::make('资源Token', 'ziyuan_token'),
-            Text::make('Title', 'title'),
+            Text::make('主题', 'theme'),
+            Text::make('资源Token', 'ziyuan_token')->hideFromIndex(),
+            Text::make('Title', 'title')->hideFromIndex(),
+            Text::make('Keywords', 'title')->hideFromIndex(),
+            Text::make('Description', 'description')->hideFromIndex(),
+            Text::make('统计JS', 'footer_js')->hideFromIndex(),
+            Text::make('站长验证meta', 'verify_meta')->hideFromIndex(),
+            Text::make('文章数', function () {
+                return $this->articles()->count();
+            }),
+            Text::make('视频数', function () {
+                return $this->posts()->count();
+            }),
+            Text::make('电影数', function () {
+                return $this->movies()->count();
+            }),
 
             MorphedByMany::make('文章', 'articles', SiteArticle::class),
+            MorphedByMany::make('视频动态', 'posts', SitePost::class),
         ];
     }
 

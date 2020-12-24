@@ -1,6 +1,6 @@
 <?php
 
-namespace Haxibiao\Cms\Model;
+namespace Haxibiao\Cms;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Haxibiao\Cms\Model;
+namespace Haxibiao\Cms;
 
 use Haxibiao\Cms\Traits\PlayWithCms;
 use Haxibiao\Content\Article as BaseArticle;

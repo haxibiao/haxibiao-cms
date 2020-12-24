@@ -16,34 +16,13 @@ use Laravel\Nova\Fields\Text;
 
 class Traffic extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
+    public static $group = 'CMS站群';
     public static $model = 'App\Traffic';
     public static function label()
     {
-        return "流量";
+        return "SEO流量";
     }
-    public static function singularLabel()
-    {
-        return "流量";
-    }
-    public static $group = '站群SEO';
-
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'name';
-
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
+    public static $title  = 'name';
     public static $search = [
         'id', 'url', 'bot', 'engine',
     ];

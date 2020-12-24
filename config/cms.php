@@ -4,10 +4,10 @@
  */
 return [
     //是否多域名
-    'multiple_domains' => env('MULTIPLE_DOMAINS', false),
+    'multi_domains' => env('MULTI_DOMAINS', false),
 
     //可选主题
-    'themes'           => [
+    'themes'        => [
         'zaixianmeiju' => '在线美剧',
     ],
 ];

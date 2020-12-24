@@ -2,7 +2,7 @@
 
 namespace Haxibiao\Cms\Nova\Metrics;
 
-use Haxibiao\Cms\Model\Traffic;
+use Haxibiao\Cms\Traffic;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 

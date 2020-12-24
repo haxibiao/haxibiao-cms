@@ -29,6 +29,9 @@ class InstallCommand extends Command
      */
     public function handle()
     {
+        $this->info('vendor:publish ...');
+        $this->vendorPublish();
+
         $this->info('复制 stubs ...');
         $this->copyStubs();
 
@@ -51,6 +54,14 @@ class InstallCommand extends Command
             $filename = basename($filepath);
             copy($filepath, app_path('Nova/' . str_replace(".stub", ".php", $filename)));
         }
+    }
+
+    public function vendorPublish()
+    {
+        $this->call('vendor:publish', [
+            '--tag'   => 'cms-config',
+            '--force' => true,
+        ]);
     }
 
 }

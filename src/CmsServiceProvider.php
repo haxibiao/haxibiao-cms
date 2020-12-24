@@ -16,13 +16,13 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->bindPathsInContainer();
-
-        //加载帮助函数
+        //帮助函数
         $src_path = __DIR__;
-        foreach (glob($src_path . '/Helper/*.php') as $filename) {
+        foreach (glob($src_path . '/helpers/*.php') as $filename) {
             require_once $filename;
         }
+
+        $this->bindPathsInContainer();
 
         // Register Commands
         $this->commands([
@@ -46,14 +46,16 @@ class CmsServiceProvider extends ServiceProvider
             $this->app->make('path.haxibiao-cms') . '/router.php'
         );
 
-        //合并配置
-        if (!app()->configurationIsCached()) {
-            $this->mergeConfigFrom(__DIR__ . '/../config/cms.php', 'cms');
-        }
-
         //安装时需要
         if ($this->app->runningInConsole()) {
+            //数据库
             $this->loadMigrationsFrom($this->app->make('path.haxibiao-cms.migrations'));
+
+            //配置文件
+            $this->publishes([
+                __DIR__ . '/../config/cms.php' => config_path('cms.php'),
+            ], 'cms-config');
+
         }
     }
 
