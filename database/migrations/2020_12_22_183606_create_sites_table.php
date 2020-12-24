@@ -13,13 +13,19 @@ class CreateSitesTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('sites');
+
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->nullable()->index()->comment('站名');
             $table->string('domain', 50)->nullable()->index()->comment('域名');
+            $table->string('theme')->nullable()->comment('主题');
             $table->string('title')->nullable();
             $table->string('keywords')->nullable();
             $table->string('description')->nullable();
+            $table->string('ziyuan_token')->nullable()->comment('百度资源站长提交收录的token');
+            $table->string('footer_js')->nullable()->comment('底部js 支持如ga，mta，matomo统计等站长权限');
+            $table->string('verify_meta')->nullable()->comment('站长验证用meta');
             $table->timestamps();
         });
     }

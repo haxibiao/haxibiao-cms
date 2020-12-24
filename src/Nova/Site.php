@@ -5,6 +5,7 @@ namespace Haxibiao\Cms\Nova;
 use App\Nova\Resource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Text;
 
 class Site extends Resource
@@ -53,6 +54,10 @@ class Site extends Resource
             ID::make()->sortable(),
             Text::make('名称', 'name'),
             Text::make('域名', 'domain'),
+            Text::make('资源Token', 'ziyuan_token'),
+            Text::make('Title', 'title'),
+
+            MorphedByMany::make('文章', 'articles', SiteArticle::class),
         ];
     }
 
