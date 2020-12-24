@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ArchiveTraffic extends Command
 {
@@ -37,6 +38,7 @@ class ArchiveTraffic extends Command
      */
     public function handle()
     {
-        //TODO: 归档并清理7天前的流量数据，保持流量记录表不过大
+        //TODO: 归档并清理3天前的流量数据，保持流量记录表不过大
+        DB::table('traffic')->where('created_at', '<', now()->subDays(3))->delete();
     }
 }

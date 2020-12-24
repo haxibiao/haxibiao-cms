@@ -55,6 +55,9 @@ class SeoTraffic
             if (str_contains($referer, 'toutiao')) {
                 $engine = 'toutiao';
             }
+            if (str_contains($referer, 'byte')) {
+                $engine = 'byte';
+            }
             if (isset($engine)) {
                 $traffic['engine']  = $engine;
                 $traffic['referer'] = $referer;
