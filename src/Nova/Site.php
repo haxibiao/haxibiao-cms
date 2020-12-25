@@ -15,11 +15,7 @@ class Site extends Resource
     public static $model = 'App\Site';
     public static function label()
     {
-        return "站点";
-    }
-    public static function singularLabel()
-    {
-        return "站点";
+        return "站点管理";
     }
 
     /**
@@ -49,8 +45,10 @@ class Site extends Resource
         return [
             ID::make()->sortable(),
             Text::make('名称', 'name'),
-            Text::make('域名', 'domain'),
-            Text::make('主题', 'theme'),
+            Text::make('域名', function () {
+                return '<a href="//' . $this->domain . '" target="_blank">' . $this->domain . '</a>';
+            })->asHtml(),
+            Text::make('模板主题', 'theme'),
             Text::make('资源Token', 'ziyuan_token')->hideFromIndex(),
             Text::make('Title', 'title')->hideFromIndex(),
             Text::make('Keywords', 'title')->hideFromIndex(),
@@ -65,6 +63,12 @@ class Site extends Resource
             }),
             Text::make('电影数', function () {
                 return $this->movies()->count();
+            }),
+            Text::make('百度已提交', function () {
+                $count_movies_pushed   = $this->movies()->whereNotNull('baidu_pushed_at')->count();
+                $count_posts_pushed    = $this->posts()->whereNotNull('baidu_pushed_at')->count();
+                $count_articles_pushed = $this->articles()->whereNotNull('baidu_pushed_at')->count();
+                return $count_movies_pushed + $count_posts_pushed + $count_articles_pushed;
             }),
 
             MorphedByMany::make('文章', 'articles', SiteArticle::class),

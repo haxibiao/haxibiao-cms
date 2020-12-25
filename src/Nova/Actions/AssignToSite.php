@@ -19,7 +19,7 @@ class AssignToSite extends Action
 {
     use InteractsWithQueue, Queueable, SerializesModels, Actionable;
 
-    public $name = '分配到站点';
+    public $name = '更新到站点';
     public function uriKey()
     {
         return str_slug(Nova::humanize($this));
@@ -34,7 +34,7 @@ class AssignToSite extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         if (!isset($fields->site_id)) {
-            return Action::danger('必须选中分配的站点');
+            return Action::danger('必须选中要更新的站点');
         }
 
         $site = Site::findOrFail($fields->site_id);
@@ -84,6 +84,10 @@ class AssignToSite extends Action
         }
         return [
             Select::make('站点', 'site_id')->options($siteOptions),
+            Select::make('收录', 'is_push')->options([
+                0 => '仅更新',
+                1 => '提交百度',
+            ]),
         ];
     }
 }
