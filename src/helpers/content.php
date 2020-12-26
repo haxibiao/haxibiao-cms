@@ -63,7 +63,6 @@ function cmsTopArticles()
                 ->latest('siteables.updated_at');
             return smartPager($qb);
         }
-    } else {
-        return indexArticles();
     }
+    return indexArticles();
 }
