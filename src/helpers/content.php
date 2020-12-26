@@ -1,8 +1,5 @@
 <?php
 
-use App\Article;
-use App\Category;
-
 /**
  * 首页置顶电影(站群)
  */
@@ -43,7 +40,10 @@ function cmsTopCategories($top = 7)
 {
     //站群模式
     if (config('cms.multi_domains')) {
-        indexTopCategories($top);
+        $site = cms_get_site();
+        if ($site->categories()->count()) {
+            return $site->categories()->latest('siteables.updated_at')->take($top)->get();
+        }
     }
     return indexTopCategories($top);
 }
@@ -61,8 +61,8 @@ function cmsTopArticles()
             $qb = $site->articles()
                 ->exclude(['body', 'json'])
                 ->latest('siteables.updated_at');
+            return smartPager($qb);
         }
-        return smartPager($qb);
     } else {
         return indexArticles();
     }

@@ -15,6 +15,15 @@ class Site extends Model
 
     protected $guarded = [];
 
+    //专题
+    public function categories()
+    {
+        return $this->morphedByMany(Category::class, 'siteable')->withPivot([
+            'baidu_pushed_at',
+        ]);
+    }
+
+    //文章
     public function articles()
     {
         return $this->morphedByMany(Article::class, 'siteable')->withPivot([
@@ -22,7 +31,7 @@ class Site extends Model
         ]);
     }
 
-    //视频动态
+    //动态
     public function posts()
     {
         return $this->morphedByMany(Post::class, 'siteable')->withPivot([
@@ -30,6 +39,7 @@ class Site extends Model
         ]);
     }
 
+    //视频
     public function videos()
     {
         return $this->morphedByMany(Video::class, 'siteable')->withPivot([
@@ -37,6 +47,7 @@ class Site extends Model
         ]);
     }
 
+    //电影
     public function movies()
     {
         return $this->morphedByMany(Movie::class, 'siteable')->withPivot([
