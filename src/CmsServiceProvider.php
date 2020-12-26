@@ -6,6 +6,7 @@ use Haxibiao\Cms\Console\Commands\ArchiveTraffic;
 use Haxibiao\Cms\Console\Commands\SitemapGenerate;
 use Haxibiao\Cms\Console\InstallCommand;
 use Haxibiao\Cms\Http\Middleware\SeoTraffic;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class CmsServiceProvider extends ServiceProvider
@@ -59,6 +60,8 @@ class CmsServiceProvider extends ServiceProvider
             ], 'cms-config');
 
         }
+
+        $this->registerMorphMap();
     }
 
     protected function bindPathsInContainer()
@@ -73,5 +76,15 @@ class CmsServiceProvider extends ServiceProvider
         ] as $abstract => $instance) {
             $this->app->instance($abstract, $instance);
         }
+    }
+
+    protected function registerMorphMap()
+    {
+        $this->morphMap(cms_morph_map());
+    }
+
+    protected function morphMap(array $map = null, bool $merge = true): array
+    {
+        return Relation::morphMap($map, $merge);
     }
 }

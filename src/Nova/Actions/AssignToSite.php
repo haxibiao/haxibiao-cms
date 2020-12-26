@@ -48,11 +48,11 @@ class AssignToSite extends Action
                 $urls[] = $model->url;
             }
             //提交百度收录
-            if ($site->ziyuan_token) {
+            if ($fields->is_push && $site->ziyuan_token) {
                 if (push_baidu($urls, $site->ziyuan_token, $site->domain)) {
                     //提交收录成功，记录时间
                     foreach ($models as $model) {
-                        $model->update(['baidu_pushed_at' => now()]);
+                        update_baidu_pushed_at($model, $site);
                         ++$pushed_count;
                     }
                 }
@@ -68,7 +68,7 @@ class AssignToSite extends Action
         }
         DB::commit();
 
-        return Action::message('修改成功!,百度提交成功' . $pushed_count . '条');
+        return Action::message('修改成功!,百度提交成功' . $pushed_count . '条' . join(',', $urls));
     }
 
     /**

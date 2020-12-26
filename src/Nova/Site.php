@@ -64,10 +64,10 @@ class Site extends Resource
             Text::make('电影数', function () {
                 return $this->movies()->count();
             }),
-            Text::make('百度已提交', function () {
-                $count_movies_pushed   = $this->movies()->whereNotNull('baidu_pushed_at')->count();
-                $count_posts_pushed    = $this->posts()->whereNotNull('baidu_pushed_at')->count();
-                $count_articles_pushed = $this->articles()->whereNotNull('baidu_pushed_at')->count();
+            Text::make('今日百度提交', function () {
+                $count_movies_pushed   = $this->movies()->where('siteables.baidu_pushed_at', '>', today())->count();
+                $count_posts_pushed    = $this->posts()->where('siteables.baidu_pushed_at', '>', today())->count();
+                $count_articles_pushed = $this->articles()->where('siteables.baidu_pushed_at', '>', today())->count();
                 return $count_movies_pushed + $count_posts_pushed + $count_articles_pushed;
             }),
 

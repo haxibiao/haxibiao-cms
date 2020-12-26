@@ -17,7 +17,7 @@ class SiteCategory extends Resource
 {
     // public static $displayInNavigation = false;
     public static $group  = 'CMS站群';
-    public static $model  = 'App\\Category';
+    public static $model  = 'Haxibiao\Cms\Category';
     public static $title  = 'name';
     public static $search = [
         'id', 'name', 'name_en',
