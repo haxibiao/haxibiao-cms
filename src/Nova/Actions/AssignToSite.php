@@ -68,7 +68,7 @@ class AssignToSite extends Action
         }
         DB::commit();
 
-        return Action::message('修改成功!,百度提交成功' . $pushed_count . '条' . join(',', $urls));
+        return Action::message('更新到站点成功' . count($models) . '条,百度提交成功' . $pushed_count . '条');
     }
 
     /**
