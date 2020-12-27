@@ -35,20 +35,5 @@ trait PlayWithCms
         return null;
     }
 
-    /**
-     * 确保提交给百度的都有url属性
-     *
-     * @return string
-     */
-    public function getUrlAttribute()
-    {
-        if (!empty($this->url)) {
-            return $this->url;
-        }
-
-        //修复专题URL
-        if (str_contains(get_class($this), 'Category')) {
-            return url("/category/" . $this->id);
-        }
-    }
+    // content里已确保提交给百度的都有url属性
 }
