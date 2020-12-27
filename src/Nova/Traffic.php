@@ -37,7 +37,9 @@ class Traffic extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('URL', 'url'),
+            Text::make('URL', function () {
+                return '<a class="btn btn-link" target="_blank" href="' . $this->url . '">' . str_limit($this->url, 40) . '</a>';
+            })->asHtml(),
             Text::make('站点', 'domain')->hideFromIndex(),
             Text::make('蜘蛛', 'bot'),
             Text::make('引擎', 'engine'),
