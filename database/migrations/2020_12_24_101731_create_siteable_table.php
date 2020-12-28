@@ -13,6 +13,11 @@ class CreateSiteableTable extends Migration
      */
     public function up()
     {
+
+        if (Schema::hasTable('siteables')) {
+            return;
+        }
+
         Schema::create('siteables', function (Blueprint $table) {
             $table->id();
             $table->integer('site_id');

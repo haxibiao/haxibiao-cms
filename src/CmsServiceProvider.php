@@ -3,6 +3,7 @@
 namespace Haxibiao\Cms;
 
 use Haxibiao\Cms\Console\Commands\ArchiveTraffic;
+use Haxibiao\Cms\Console\Commands\CmsUpdate;
 use Haxibiao\Cms\Console\Commands\SitemapGenerate;
 use Haxibiao\Cms\Console\InstallCommand;
 use Haxibiao\Cms\Http\Middleware\SeoTraffic;
@@ -31,6 +32,7 @@ class CmsServiceProvider extends ServiceProvider
             InstallCommand::class,
             SitemapGenerate::class,
             ArchiveTraffic::class,
+            CmsUpdate::class,
         ]);
     }
 

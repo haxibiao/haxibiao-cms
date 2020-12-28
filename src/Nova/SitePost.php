@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource;
 
 class SitePost extends Resource
@@ -25,6 +26,12 @@ class SitePost extends Resource
     public static $search = [
         'id', 'title',
     ];
+
+    //过滤草稿状态的
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->whereStatus(1);
+    }
 
     /**
      * Get the fields displayed by the resource.

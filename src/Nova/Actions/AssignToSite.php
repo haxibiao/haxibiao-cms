@@ -41,6 +41,7 @@ class AssignToSite extends Action
 
         $pushed_count = 0;
         DB::beginTransaction();
+        $err = '';
         try {
             $urls = [];
             foreach ($models as $model) {
@@ -49,26 +50,33 @@ class AssignToSite extends Action
             }
             //提交百度收录
             if ($fields->is_push && $site->ziyuan_token) {
-                if (push_baidu($urls, $site->ziyuan_token, $site->domain)) {
+                $push_result = push_baidu($urls, $site->ziyuan_token, $site->domain);
+                if ($push_result == "成功") {
                     //提交收录成功，记录时间
                     foreach ($models as $model) {
                         update_baidu_pushed_at($model, $site);
                         ++$pushed_count;
                     }
+                } else {
+                    $err = $push_result;
                 }
             }
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            $err = $e->getMessage();
+            Log::error($err);
             DB::rollBack();
             $msg = '数据批量变更失败，数据回滚';
             if (!is_prod_env()) {
-                $msg .= $e->getMessage();
+                $msg .= $err;
             }
             return Action::danger($msg);
         }
         DB::commit();
 
-        return Action::message('更新到站点成功' . count($models) . '条,百度提交成功' . $pushed_count . '条');
+        if ($fields->is_push && $pushed_count == 0) {
+            return Action::danger('更新到站点成功' . count($models) . '条, 百度提交失败, 原因:' . $err);
+        }
+        return Action::message('更新到站点成功' . count($models) . '条, 百度提交成功' . $pushed_count . '条');
     }
 
     /**
