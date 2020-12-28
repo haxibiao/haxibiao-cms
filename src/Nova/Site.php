@@ -4,7 +4,6 @@ namespace Haxibiao\Cms\Nova;
 
 use App\Nova\Resource;
 use App\Nova\SitePost;
-use Haxibiao\Cms\Nova\Filters\SitesByOwner;
 use Haxibiao\Cms\Nova\Metrics\SiteOwnerPartition;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
@@ -54,10 +53,11 @@ class Site extends Resource
             })->asHtml(),
             Text::make('模板主题', 'theme'),
             Text::make('百度Token', 'ziyuan_token')->hideFromIndex(),
-            Text::make('360Token', '360_token')->hideFromIndex(),
-            Text::make('搜狗Token', 'sogou_token')->hideFromIndex(),
             Text::make('神马Token', 'shenma_token')->hideFromIndex(),
-            Text::make('头条Token', 'toutiao_token')->hideFromIndex(),
+            Text::make('神马站长邮箱', 'shenma_owner_email')->hideFromIndex()->placeholder('自动提交MIP数据到神马需要'),
+            Text::make('360Token', '360_token')->hideFromIndex()->placeholder('暂未支持'),
+            Text::make('搜狗Token', 'sogou_token')->hideFromIndex()->placeholder('暂未支持'),
+            Text::make('头条Token', 'toutiao_token')->hideFromIndex()->placeholder('暂未支持'),
             Text::make('SEO标题', 'title')->hideFromIndex(),
             Text::make('SEO关键词', 'keywords')->hideFromIndex(),
             Text::make('SEO描述', 'description')->hideFromIndex(),
@@ -106,7 +106,7 @@ class Site extends Resource
     public function filters(Request $request)
     {
         return [
-            new SitesByOwner,
+            // new SitesByOwner,
         ];
     }
 

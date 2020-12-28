@@ -21,6 +21,10 @@ class AddOwnerToSites extends Migration
                 $table->string('sogou_token', 30)->nullable()->comment('搜狗站长token');
                 $table->string('shenma_token', 30)->nullable()->comment('神马站长token');
             }
+
+            if (!Schema::hasColumn('sites', 'shenma_owner_email')) {
+                $table->string('shenma_owner_email', 50)->nullable()->comment('神马站长邮箱地址');
+            }
         });
     }
 

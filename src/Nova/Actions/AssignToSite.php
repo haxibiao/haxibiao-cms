@@ -60,6 +60,12 @@ class AssignToSite extends Action
                 } else {
                     $err = $push_result;
                 }
+
+                //顺便提交下神马MIP数据
+                if ($site->shenma_token && $site->shenma_owner_email) {
+                    //神马没提示当日用量多少，不计较成败了
+                    push_shenma($urls, $site->shenma_token, $site->domain, $site->shenma_owner_email);
+                }
             }
         } catch (\Exception $e) {
             $err = $e->getMessage();
