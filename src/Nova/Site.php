@@ -4,6 +4,8 @@ namespace Haxibiao\Cms\Nova;
 
 use App\Nova\Resource;
 use App\Nova\SitePost;
+use Haxibiao\Cms\Nova\Filters\SitesByOwner;
+use Haxibiao\Cms\Nova\Metrics\SiteOwnerPartition;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphedByMany;
@@ -45,11 +47,16 @@ class Site extends Resource
         return [
             ID::make()->sortable(),
             Text::make('名称', 'name'),
+            Text::make('站长', 'owner'),
             Text::make('域名', function () {
                 return '<a href="//' . $this->domain . '" target="_blank">' . $this->domain . '</a>';
             })->asHtml(),
             Text::make('模板主题', 'theme'),
-            Text::make('资源Token', 'ziyuan_token')->hideFromIndex(),
+            Text::make('百度Token', 'ziyuan_token')->hideFromIndex(),
+            Text::make('360Token', '360_token')->hideFromIndex(),
+            Text::make('搜狗Token', 'sogou_token')->hideFromIndex(),
+            Text::make('神马Token', 'shenma_token')->hideFromIndex(),
+            Text::make('头条Token', 'toutiao_token')->hideFromIndex(),
             Text::make('Title', 'title')->hideFromIndex(),
             Text::make('Keywords', 'title')->hideFromIndex(),
             Text::make('Description', 'description')->hideFromIndex(),
@@ -84,7 +91,9 @@ class Site extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            new SiteOwnerPartition,
+        ];
     }
 
     /**
@@ -95,7 +104,9 @@ class Site extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new SitesByOwner,
+        ];
     }
 
     /**
