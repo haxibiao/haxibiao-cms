@@ -40,7 +40,11 @@ class SiteArticle extends Resource
         return [
             ID::make()->sortable(),
             Text::make('相关文字', function () {
-                $text = str_limit($this->body);
+                $text = $this->title;
+                if (empty($text)) {
+                    $text = $this->body;
+                }
+                $text = str_limit($text);
                 return '<a style="width: 300px" href="articles/' . $this->id . '">' . $text . "</a>";
             })->asHtml()->onlyOnIndex(),
             Text::make('文章标题', 'title')->hideFromIndex()->hideWhenCreating(),
