@@ -59,7 +59,7 @@ class Site extends Resource
             Text::make('神马Token', 'shenma_token')->hideFromIndex(),
             Text::make('头条Token', 'toutiao_token')->hideFromIndex(),
             Text::make('SEO标题', 'title')->hideFromIndex(),
-            Text::make('SEO关键词', 'title')->hideFromIndex(),
+            Text::make('SEO关键词', 'keywords')->hideFromIndex(),
             Text::make('SEO描述', 'description')->hideFromIndex(),
             Textarea::make('站长验证Meta', 'verify_meta')->hideFromIndex()->placeholder("主要验证站长身份"),
             Textarea::make('网站底部JS', 'footer_js')->hideFromIndex()->placeholder('自动提交push,第三方统计js...'),
