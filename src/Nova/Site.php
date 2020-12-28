@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 
 class Site extends Resource
 {
@@ -57,11 +58,11 @@ class Site extends Resource
             Text::make('搜狗Token', 'sogou_token')->hideFromIndex(),
             Text::make('神马Token', 'shenma_token')->hideFromIndex(),
             Text::make('头条Token', 'toutiao_token')->hideFromIndex(),
-            Text::make('Title', 'title')->hideFromIndex(),
-            Text::make('Keywords', 'title')->hideFromIndex(),
-            Text::make('Description', 'description')->hideFromIndex(),
-            Text::make('统计JS', 'footer_js')->hideFromIndex(),
-            Text::make('站长验证meta', 'verify_meta')->hideFromIndex(),
+            Text::make('SEO标题', 'title')->hideFromIndex(),
+            Text::make('SEO关键词', 'title')->hideFromIndex(),
+            Text::make('SEO描述', 'description')->hideFromIndex(),
+            Textarea::make('站长验证Meta', 'verify_meta')->hideFromIndex()->placeholder("主要验证站长身份"),
+            Textarea::make('网站底部JS', 'footer_js')->hideFromIndex()->placeholder('自动提交push,第三方统计js...'),
             Text::make('文章数', function () {
                 return $this->articles()->count();
             }),
