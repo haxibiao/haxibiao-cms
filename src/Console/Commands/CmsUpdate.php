@@ -48,7 +48,7 @@ class CmsUpdate extends Command
         //自动优先更新当前站点专注的专题下的内容
         //站点管理下，允许站长设置当前站点专注的专题(电影，视频，文章，动态)
 
-        $sites = Site::with('related.siteable')->get();
+        $sites = Site::with('related')->get();
         foreach ($sites as $site) {
             self::handleSite($site);
         }
@@ -58,26 +58,38 @@ class CmsUpdate extends Command
 
         $relatedList = data_get($site,'related',[]);
         foreach ($relatedList as $related){
-            // model type in post,article,video,movie and category
-            $model = data_get($related,'siteable');
-            self::updateModel($model);
+            if(!$related){
+                continue;
+            }
+            self::updateModel($related);
 
             // model is category
             if(data_get($related,'siteable_type',null) == 'categories'){
-                $category = $model->load('related.categorized');
+                $category = $related->siteable;
+                $category = $category->load('related.categorized');
                 $relatedListOfCategory = data_get($category,'related');
                 foreach ($relatedListOfCategory as $relatedOfCategory){
-                    $modelOfCategory = data_get($relatedOfCategory,'categorized');
-                    self::updateModel($modelOfCategory);
+                    $categorized = $relatedOfCategory->categorized;
+                    $siteable = $categorized->siteable()
+                        ->where('site_id',$site->id)
+                        ->first();
+
+                    // 该内容已经与当前网站关联，更新时间戳就行
+                    if($siteable){
+                        self::updateModel($siteable);
+                        continue;
+                    }
+                    $categorized->sites()->syncWithoutDetaching([
+                        $site->id => [
+                            'updated_at' => Carbon::today()
+                        ]
+                    ]);
                 }
             }
         }
     }
 
     private function updateModel($model){
-        if(!$model){
-            return;
-        }
         if(Carbon::now()->diffInHours($model->updated_at) < self::INTERVEL_HOUSE){
             return;
         }

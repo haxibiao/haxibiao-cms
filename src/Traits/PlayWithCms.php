@@ -1,8 +1,8 @@
 <?php
 namespace Haxibiao\Cms\Traits;
 
-use App\Siteable;
 use Haxibiao\Cms\Site;
+use Haxibiao\Cms\Siteable;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait PlayWithCms
