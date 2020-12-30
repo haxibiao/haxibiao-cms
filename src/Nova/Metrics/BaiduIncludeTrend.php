@@ -20,24 +20,23 @@ class BaiduIncludeTrend extends Trend
         $range = $request->range;
         $data  = [];
 
-        $site = \App\Site::where('domain',$range)->first();
+        $site = \App\Site::where('domain', $range)->first();
         $json = $site->json;
-        if($json){
+        if ($json) {
             foreach ($json['baidu'] as $date => $value) {
                 $data[$date] = $value;
             }
-        }else{
-            for($i=29;$i>=0;$i--){
+        } else {
+            for ($i = 29; $i >= 0; $i--) {
                 $data[today()->subday($i)->toDateString()] = 0;
             }
         }
-        
 
-        $max = max($data);
+        $max       = max($data);
         $yesterday = $data[today()->subday(1)->toDateString()];
-        
+
         return (new TrendResult(end($data)))->trend($data)
-        ->suffix("昨日: $yesterday 最大: $max");
+            ->suffix("昨日: $yesterday 最大: $max");
     }
 
     /**
@@ -47,10 +46,9 @@ class BaiduIncludeTrend extends Trend
      */
     public function ranges()
     {
-        $sites = \App\Site::get();
-        $result = [];
-        foreach ($sites as $site) {
-            $result[$site->domain]=$site->name;
+        $result = neihan_sites_domains();
+        if (is_beian_sites()) {
+            $result = neihan_beian_domains();
         }
         return $result;
     }
