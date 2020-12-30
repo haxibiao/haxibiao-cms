@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Site extends Resource
 {
@@ -20,22 +21,16 @@ class Site extends Resource
     {
         return "站点管理";
     }
-
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'name';
-
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
+    public static $title  = 'name';
     public static $search = [
         'id', 'name', 'domain',
     ];
+
+    //过滤非激活状态的站点
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->whereActive(1);
+    }
 
     /**
      * Get the fields displayed by the resource.
