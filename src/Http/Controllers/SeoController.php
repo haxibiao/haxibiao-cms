@@ -38,6 +38,7 @@ class SeoController extends Controller
 User-agent: *
 Disallow: /*q=*
 Disallow: /share/qrcode/
+
 Sitemap: https://$domain/sitemap.xml
 EOD;
         return response($robotContent)
