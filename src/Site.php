@@ -2,12 +2,11 @@
 
 namespace Haxibiao\Cms;
 
-use Haxibiao\Cms\Article;
-use Haxibiao\Cms\Movie;
-use Haxibiao\Cms\Post;
+use App\Article;
+use App\Movie;
+use App\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Site extends Model
 {
@@ -43,7 +42,7 @@ class Site extends Model
     {
         return $this->morphedByMany($related, 'siteable')->withPivot([
             'baidu_pushed_at',
-        ]);;
+        ]);
     }
 
     public function related()
