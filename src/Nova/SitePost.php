@@ -24,7 +24,7 @@ class SitePost extends Resource
     public static $model  = 'Haxibiao\Cms\Post';
     public static $title  = 'title';
     public static $search = [
-        'id', 'title',
+        'id', 'content',
     ];
 
     //过滤草稿状态的
@@ -43,26 +43,16 @@ class SitePost extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('相关文字', function () {
-                $text = str_limit($this->description);
-                return '<a style="width: 300px" href="articles/' . $this->id . '">' . $text . "</a>";
-            })->asHtml()->onlyOnIndex(),
-
             Text::make('内容', 'content')->hideWhenCreating(),
-
             BelongsTo::make('上传用户', 'user', User::class)->onlyOnForms(),
-
-            Text::make('点赞数', 'count_likes')->hideWhenCreating(),
-
-            Textarea::make('文章内容', 'description'),
-
+            Text::make('点赞', 'count_likes')->hideWhenCreating(),
+            Textarea::make('描述', 'description'),
             Select::make('状态', 'status')->options([
                 1  => '公开',
                 0  => '草稿',
                 -1 => '下架',
             ])->displayUsingLabels(),
             BelongsTo::make('作者', 'user', 'App\Nova\User')->exceptOnForms(),
-
             Text::make('时间', function () {
                 return time_ago($this->created_at);
             })->onlyOnIndex(),
