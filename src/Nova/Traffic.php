@@ -7,6 +7,7 @@ use Haxibiao\Cms\Nova\Metrics\SiteSpiderPartition;
 use Haxibiao\Cms\Nova\Metrics\SiteTrafficPartition;
 use Haxibiao\Cms\Nova\Metrics\SpiderPartition;
 use Haxibiao\Cms\Nova\Metrics\SpiderTrend;
+use Haxibiao\Cms\Nova\Metrics\BaiduIncludeTrend;
 use Haxibiao\Cms\Nova\Metrics\TrafficPartition;
 use Haxibiao\Cms\Nova\Metrics\TrafficTrend;
 use Illuminate\Http\Request;
@@ -63,6 +64,7 @@ class Traffic extends Resource
             (new TrafficTrend)->width('1/4'),
             (new SiteTrafficPartition)->width('1/4'),
             (new SiteSpiderPartition)->width('1/4'),
+            (new BaiduIncludeTrend)->width('1/4'),
         ];
     }
 
