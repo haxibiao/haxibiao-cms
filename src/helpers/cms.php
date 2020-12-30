@@ -44,7 +44,9 @@ function cms_seo_title()
     //站群模式
     if (config('cms.multi_domains')) {
         if ($site = cms_get_site()) {
-            return $site->title;
+            if ($site->title) {
+                return $site->title;
+            }
         }
     }
     return get_seo_title();
@@ -55,7 +57,9 @@ function cms_seo_keywords()
     //站群模式
     if (config('cms.multi_domains')) {
         if ($site = cms_get_site()) {
-            return $site->keywords;
+            if ($site->keywords) {
+                return $site->keywords;
+            }
         }
     }
     return get_seo_keywords();
@@ -66,7 +70,9 @@ function cms_seo_description()
     //站群模式
     if (config('cms.multi_domains')) {
         if ($site = cms_get_site()) {
-            return $site->description;
+            if ($site->description) {
+                return $site->description;
+            }
         }
     }
     return get_seo_description();
@@ -77,7 +83,9 @@ function cms_seo_meta()
     //站群模式
     if (config('cms.multi_domains')) {
         if ($site = cms_get_site()) {
-            return $site->verify_meta;
+            if ($site->verify_meta) {
+                return $site->verify_meta;
+            }
         }
     }
     return get_seo_meta();
