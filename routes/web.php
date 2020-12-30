@@ -23,3 +23,5 @@ Route::get('/sitemap', SitemapController::class . '@index');
 Route::get('/sitemap.xml', SitemapController::class . '@index');
 //单个地图
 Route::get('/sitemap/{name_en}', SitemapController::class . '@name_en');
+// robots
+Route::get('/robots.txt', SeoController::class.'@robot');

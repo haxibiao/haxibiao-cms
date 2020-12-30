@@ -3,6 +3,7 @@
 namespace Haxibiao\Cms\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class SeoController extends Controller
 {
@@ -29,5 +30,19 @@ class SeoController extends Controller
         return view('seo.baidu_include')
             ->with('beian', $beian)
             ->with('neihan', $neihan);
+    }
+
+    public function robot(){
+        $domain = get_domain();
+        $robotContent = <<<EOD
+User-agent: *
+Disallow: /*q=*
+Disallow: /share/qrcode/
+Sitemap: https://$domain/sitemap.xml
+EOD;
+        return response($robotContent)
+            ->header('Content-Type', 'text/plain')
+            ->header('Cache-Control', 'max-age=604800')
+            ->header('Expires', Carbon::now()->addDays(7)->toRfc7231String());
     }
 }
