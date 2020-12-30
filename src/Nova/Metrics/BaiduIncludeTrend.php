@@ -2,6 +2,7 @@
 
 namespace Haxibiao\Cms\Nova\Metrics;
 
+use App\Site;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\TrendResult;
@@ -46,9 +47,9 @@ class BaiduIncludeTrend extends Trend
      */
     public function ranges()
     {
-        $result = neihan_sites_domains();
-        if (is_beian_sites()) {
-            $result = neihan_beian_domains();
+        $result = [];
+        foreach (Site::whereActive(true)->get() as $site) {
+            $result[$site->domain] = $site->name;
         }
         return $result;
     }
