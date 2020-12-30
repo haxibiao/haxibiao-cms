@@ -50,6 +50,11 @@ class AssignToSite extends Action
             }
             //提交百度收录
             if ($fields->is_push && $site->ziyuan_token) {
+                if (count($urls) >= 3000) {
+                    //简单防止超过百度提交配额的过渡请求
+                    $urls = array_slice($urls, 0, 3000);
+                }
+
                 $push_result = push_baidu($urls, $site->ziyuan_token, $site->domain);
                 if ($push_result == "成功") {
                     //提交收录成功，记录时间
