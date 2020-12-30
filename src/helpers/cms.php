@@ -141,8 +141,8 @@ function cmsTopVideos($top = 4)
     //站群模式
     if (config('cms.multi_domains')) {
         if ($site = cms_get_site()) {
-            if ($site->posts()->count()) {
-                return $site->posts()->has('video')->take($top)->get();
+            if ($site->posts(true)->count()) {
+                return $site->posts(true)->has('video')->take($top)->get();
             }
         }
     }
@@ -158,8 +158,8 @@ function cmsTopCategories($top = 7)
     //站群模式
     if (config('cms.multi_domains')) {
         $site = cms_get_site();
-        if ($site->categories()->count()) {
-            return $site->categories()->latest('siteables.updated_at')->take($top)->get();
+        if ($site->categories(true)->count()) {
+            return $site->categories(true)->latest('siteables.updated_at')->take($top)->get();
         }
     }
     return indexTopCategories($top);
@@ -174,8 +174,8 @@ function cmsTopArticles()
     //站群模式
     if (config('cms.multi_domains')) {
         $site = cms_get_site();
-        if ($site->articles()->count()) {
-            $qb = $site->articles()
+        if ($site->articles(true)->count()) {
+            $qb = $site->articles(true)
                 ->exclude(['body', 'json'])
                 ->latest('siteables.updated_at');
             return smartPager($qb);

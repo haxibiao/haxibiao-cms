@@ -3,8 +3,9 @@
 namespace Haxibiao\Cms\Nova;
 
 use App\Nova\Resource;
-use App\Nova\SitePost;
 use Haxibiao\Cms\Nova\Metrics\SiteOwnerPartition;
+use Haxibiao\Cms\Nova\SiteArticle;
+use Haxibiao\Cms\Nova\SitePost;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;

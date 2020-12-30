@@ -2,9 +2,6 @@
 
 namespace Haxibiao\Cms;
 
-use App\Article;
-use App\Movie;
-use App\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,26 +12,42 @@ class Site extends Model
     protected $guarded = [];
 
     //专题
-    public function categories()
+    public function categories($userAppModel = false)
     {
+        //允许App层重写覆盖属性
+        if ($userAppModel) {
+            return $this->siteable(\App\Category::class);
+        }
         return $this->siteable(Category::class);
     }
 
     //文章
-    public function articles()
+    public function articles($userAppModel = false)
     {
+        //允许App层重写覆盖属性
+        if ($userAppModel) {
+            return $this->siteable(\App\Article::class);
+        }
         return $this->siteable(Article::class);
     }
 
     //动态
-    public function posts()
+    public function posts($userAppModel = false)
     {
+        //允许App层重写覆盖属性
+        if ($userAppModel) {
+            return $this->siteable(\App\Post::class);
+        }
         return $this->siteable(Post::class);
     }
 
     //电影
-    public function movies()
+    public function movies($userAppModel = false)
     {
+        //允许App层重写覆盖属性
+        if ($userAppModel) {
+            return $this->siteable(\App\Movie::class);
+        }
         return $this->siteable(Movie::class);
     }
 
