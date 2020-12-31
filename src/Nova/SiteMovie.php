@@ -3,10 +3,6 @@
 namespace Haxibiao\Cms\Nova;
 
 use Haxibiao\Cms\Nova\Actions\AssignToSite;
-use Haxibiao\Cms\Nova\Filters\MoviesByRegion;
-use Haxibiao\Cms\Nova\Filters\MoviesByStyle;
-use Haxibiao\Cms\Nova\Filters\MoviesByType;
-use Haxibiao\Cms\Nova\Filters\MoviesByYear;
 use Haxibiao\Media\Nova\Movie as NovaMovie;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -31,10 +27,10 @@ class SiteMovie extends NovaMovie
     public function filters(Request $request)
     {
         return [
-            new MoviesByRegion,
-            new MoviesByYear,
-            new MoviesByType,
-            new MoviesByStyle,
+            // new MoviesByRegion,
+            // new MoviesByYear,
+            // new MoviesByType,
+            // new MoviesByStyle,
         ];
     }
 
