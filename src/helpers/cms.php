@@ -92,6 +92,22 @@ function cms_seo_meta()
 }
 
 /**
+ * 返回站点ICP备案号
+ */
+function cms_icp_info()
+{
+    //站群模式
+    if (config('cms.multi_domains')) {
+        if ($site = cms_get_site()) {
+            if ($site->icp) {
+                return $site->icp;
+            }
+        }
+    }
+    return seo_value('站长', 'ICP');
+}
+
+/**
  * cms底部js
  */
 function cms_seo_js()
