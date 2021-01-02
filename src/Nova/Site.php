@@ -20,7 +20,7 @@ class Site extends Resource
     public static $model = 'App\Site';
     public static function label()
     {
-        return "站点管理";
+        return "站群";
     }
     public static $title  = 'name';
     public static $search = [
