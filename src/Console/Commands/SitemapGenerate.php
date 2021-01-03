@@ -3,6 +3,7 @@
 namespace Haxibiao\Cms\Console\Commands;
 
 use App\Category;
+use App\Site;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -24,15 +25,16 @@ class SitemapGenerate extends Command
 
     public function handle()
     {
-        $domain             = $this->option('domain');
-        $neihanSitesDomains = array_keys(neihan_sites_domains());
+        $domain = $this->option('domain');
+
         //单个域名
         if ($domain) {
             return $this->generateSingleSitemap($domain);
         }
-        //全部站群
-        foreach ($neihanSitesDomains as $neihanSitesDomain) {
-            $this->generateSingleSitemap($neihanSitesDomain);
+
+        //站群全部活跃域名
+        foreach (Site::active()->get() as $site) {
+            $this->generateSingleSitemap($site->domain);
         }
     }
 

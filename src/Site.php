@@ -11,6 +11,11 @@ class Site extends Model
 
     protected $guarded = [];
 
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
+
     //专题
     public function categories($userAppModel = false)
     {
