@@ -14,6 +14,8 @@ Route::get('/debug', 'LogController@debug');
 Route::group(['prefix' => 'seo'], function (RouteRegisterContract $route) {
     // 百度收录查询
     Route::get('/baidu/include', 'SeoController@baiduInclude');
+    //收录反馈查询
+    Route::get('/pushResult', 'SeoController@pushResult');
 });
 
 //站点地图索引

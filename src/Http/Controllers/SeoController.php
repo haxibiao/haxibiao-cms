@@ -4,6 +4,8 @@ namespace Haxibiao\Cms\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Haxibiao\Cms\Site;
+use Illuminate\Http\Request;
 
 class SeoController extends Controller
 {
@@ -32,8 +34,9 @@ class SeoController extends Controller
             ->with('neihan', $neihan);
     }
 
-    public function robot(){
-        $domain = get_domain();
+    public function robot()
+    {
+        $domain       = get_domain();
         $robotContent = <<<EOD
 User-agent: *
 Disallow: /*q=*
@@ -45,5 +48,39 @@ EOD;
             ->header('Content-Type', 'text/plain')
             ->header('Cache-Control', 'max-age=604800')
             ->header('Expires', Carbon::now()->addDays(7)->toRfc7231String());
+    }
+
+    /**
+     * 查询推送api反馈结果
+     * 参数：api（为推送接口调用地址）(选传)
+     * 格式：http://ainicheng.com/api/site/pushResult?api=http://data.zz.baidu.com/urls?site=https://dongdaima.com&token=mTsKBsNnvGSmGuFd
+     */
+    public function pushResult(Request $request)
+    {
+        $info = "今日剩余可推送URL条数:0";
+
+        $api = $request->get('api') ?? null;
+        if (empty($api)) {
+            $name = seo_site_name();
+            $site = Site::where('name', $name)->first();
+            if ($site) {
+                $api = 'http://data.zz.baidu.com/urls?site=' . $site->domain . '&token=' . $site->token;
+            }
+        } else {
+            $api = urldecode(str_after($request->url . $request->getUri(), 'api='));
+        }
+
+        if ($api) {
+            $result = pushSeoUrl(['www.baidu.com'], $api);
+            if (str_contains($result, "success")) {
+                $result = json_decode($result);
+                $info   = "今日剩余可推送URL条数:" . $result->remain;
+            } else {
+                $info = "查询失败!推送接口调用地址错误!请联系站长!";
+            }
+        } else {
+            $info = "推送接口调用地址为NULL!请联系站长!";
+        }
+        return $info;
     }
 }
