@@ -2,6 +2,7 @@
 
 namespace Haxibiao\Cms;
 
+use App\Site;
 use Haxibiao\Cms\Console\Commands\ArchiveTraffic;
 use Haxibiao\Cms\Console\Commands\CmsUpdate;
 use Haxibiao\Cms\Console\Commands\SitemapGenerate;
@@ -62,6 +63,15 @@ class CmsServiceProvider extends ServiceProvider
             ], 'cms-config');
 
         }
+
+        //cms站点
+        $this->app->singleton('cms_site', function ($app) {
+            if ($site = Site::whereDomain(get_domain())->first()) {
+                return $site;
+            }
+            //默认返回最后一个站点
+            return Site::latest('id')->first();
+        });
 
         $this->registerMorphMap();
     }

@@ -1,6 +1,5 @@
 <?php
 
-use Haxibiao\Cms\Site;
 use Haxibiao\Cms\Siteable;
 
 function cms_morph_map()
@@ -127,10 +126,7 @@ function cms_seo_js()
  */
 function cms_get_site()
 {
-    if ($site = Site::whereDomain(get_domain())->first()) {
-        return $site;
-    }
-    abort(404, "没有配置当前的cms站点");
+    return app('cms_site');
 }
 
 /**
