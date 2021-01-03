@@ -1,7 +1,5 @@
 <?php
 
-declare (strict_types = 1);
-
 use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 use Illuminate\Support\Facades\Route;
 
@@ -15,13 +13,13 @@ Route::get('/debug', 'LogController@debug');
  */
 Route::group(['prefix' => 'seo'], function (RouteRegisterContract $route) {
     // 百度收录查询
-    Route::get('/baidu/include', SeoController::class . '@baiduInclude');
+    Route::get('/baidu/include', 'SeoController@baiduInclude');
 });
 
 //站点地图索引
-Route::get('/sitemap', SitemapController::class . '@index');
-Route::get('/sitemap.xml', SitemapController::class . '@index');
+Route::get('/sitemap', 'SitemapController@index');
+Route::get('/sitemap.xml', 'SitemapController@index');
 //单个地图
-Route::get('/sitemap/{name_en}', SitemapController::class . '@name_en');
+Route::get('/sitemap/{name_en}', 'SitemapController@name_en');
 // robots
-Route::get('/robots.txt', SeoController::class.'@robot');
+Route::get('/robots.txt', 'SeoController@robot');

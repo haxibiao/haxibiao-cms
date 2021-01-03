@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(
     [
         'middleware' => ['api'],
-        'namespace'  => 'Haxibiao\Cms\Http\Controllers\Api',
+        'namespace'  => 'Haxibiao\Cms\Http\Api',
     ],
     __DIR__ . '/routes/api.php'
 );
