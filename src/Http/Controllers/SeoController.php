@@ -51,7 +51,7 @@ EOD;
     }
 
     /**
-     * 查询推送api反馈结果
+     * 查询百度推送api反馈结果
      * 参数：api（为推送接口调用地址）(选传)
      * 格式：http://ainicheng.com/api/site/pushResult?api=http://data.zz.baidu.com/urls?site=https://dongdaima.com&token=mTsKBsNnvGSmGuFd
      */
@@ -64,7 +64,7 @@ EOD;
             $name = seo_site_name();
             $site = Site::where('name', $name)->first();
             if ($site) {
-                $api = 'http://data.zz.baidu.com/urls?site=' . $site->domain . '&token=' . $site->token;
+                $api = 'http://data.zz.baidu.com/urls?site=' . $site->domain . '&token=' . $site->ziyuan_token;
             }
         } else {
             $api = urldecode(str_after($request->url . $request->getUri(), 'api='));
