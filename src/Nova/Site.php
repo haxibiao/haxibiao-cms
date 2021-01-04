@@ -50,7 +50,7 @@ class Site extends Resource
             })->asHtml(),
             Text::make('模板主题', 'theme'),
             Boolean::make('活跃', 'active'),
-            Text::make('备案', 'icp'),
+            Text::make('备案', 'icp')->hideFromIndex(),
             Text::make('百度Token', 'ziyuan_token')->hideFromIndex(),
             Text::make('神马Token', 'shenma_token')->hideFromIndex(),
             Text::make('神马站长邮箱', 'shenma_owner_email')->hideFromIndex()->placeholder('自动提交MIP数据到神马需要'),
@@ -71,6 +71,9 @@ class Site extends Resource
             Text::make('电影数', function () {
                 return $this->movies()->count();
             }),
+            Text::make('查询配额', function () {
+                return '<a href="//' . $this->domain . '/seo/pushResult" target="_blank">百度</a>';
+            })->asHtml(),
             Text::make('今日百度提交', function () {
                 $count_movies_pushed   = $this->movies()->where('siteables.baidu_pushed_at', '>', today())->count();
                 $count_posts_pushed    = $this->posts()->where('siteables.baidu_pushed_at', '>', today())->count();

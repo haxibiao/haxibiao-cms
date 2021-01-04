@@ -73,10 +73,12 @@ EOD;
         if ($api) {
             $result = pushSeoUrl(['www.baidu.com'], $api);
             if (str_contains($result, "success")) {
+
                 $result = json_decode($result);
-                $info   = "今日剩余可推送URL条数:" . $result->remain;
+                $info   = "今日剩余可推送URL条数: " . $result->remain;
+                $info .= "\n 今日成功推送URL条数: " . $result->success;
             } else {
-                $info = "查询失败!推送接口调用地址错误!请联系站长!";
+                $info = "查询失败! 推送接口调用错误! 请联系站长检查token?";
             }
         } else {
             $info = "推送接口调用地址为NULL!请联系站长!";
