@@ -30,6 +30,14 @@ class SiteMovie extends NovaMovie
      */
     public function filters(Request $request)
     {
+        //暂时海外服务器(hk都OK)这里site-movie filters奇怪的500错误未定位
+        if (is_prod_env()) {
+            $safe_servers = str_contains(gethostname(), 'gz') || str_contains(gethostname(), 'hk');
+            if (!$safe_servers) {
+                return [];
+            }
+        }
+
         return [
             new MoviesByRegion,
             new MoviesByYear,
