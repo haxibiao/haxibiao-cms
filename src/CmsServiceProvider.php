@@ -4,10 +4,12 @@ namespace Haxibiao\Cms;
 
 use App\Site;
 use Haxibiao\Cms\Console\Commands\ArchiveTraffic;
+use Haxibiao\Cms\Console\Commands\BaiduInclude;
 use Haxibiao\Cms\Console\Commands\CmsUpdate;
 use Haxibiao\Cms\Console\Commands\SitemapGenerate;
 use Haxibiao\Cms\Console\InstallCommand;
 use Haxibiao\Cms\Http\Middleware\SeoTraffic;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,6 +35,7 @@ class CmsServiceProvider extends ServiceProvider
             InstallCommand::class,
             SitemapGenerate::class,
             ArchiveTraffic::class,
+            BaiduInclude::class,
             CmsUpdate::class,
         ]);
     }
@@ -74,6 +77,24 @@ class CmsServiceProvider extends ServiceProvider
         });
 
         $this->registerMorphMap();
+
+        if (config('cms.multi_domains')) {
+            $this->app->booted(function () {
+                $schedule = $this->app->make(Schedule::class);
+                // 每天定时归档seo流量
+                $schedule->command('archive:traffic')->dailyAt('1:00');;
+
+                // 自动更新站群首页资源
+                $schedule->command('cms:update')->dailyAt('2:00');
+
+                // 生成新的SiteMap
+                $schedule->command('sitemap:generate')->dailyAt('3:00');
+
+                // 保存每个站当天的百度索引量
+                $schedule->command('baidu:include')->dailyAt('4:00');
+
+            });
+        }
     }
 
     protected function bindPathsInContainer()
