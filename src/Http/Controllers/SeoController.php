@@ -58,11 +58,10 @@ EOD;
     public function pushResult(Request $request)
     {
         $info = "今日剩余可推送URL条数:0";
+        $site = cms_get_site();
 
         $api = $request->get('api') ?? null;
         if (empty($api)) {
-            $name = seo_site_name();
-            $site = Site::where('name', $name)->first();
             if ($site) {
                 $api = 'http://data.zz.baidu.com/urls?site=' . $site->domain . '&token=' . $site->ziyuan_token;
             }
@@ -73,10 +72,17 @@ EOD;
         if ($api) {
             $result = pushSeoUrl(['www.baidu.com'], $api);
             if (str_contains($result, "success")) {
-
                 $result = json_decode($result);
                 $info   = "今日剩余可推送URL条数: " . $result->remain;
                 $info .= "\n 今日成功推送URL条数: " . $result->success;
+
+                //更新站点配额
+
+                $data                  = $site->data ?? [];
+                $data['baidu_remain']  = $result->remain;
+                $data['baidu_success'] = $result->success;
+                $site->data            = $data;
+                $site->save();
             } else {
                 $info = "查询失败! 推送接口调用错误! 请联系站长检查token?";
             }

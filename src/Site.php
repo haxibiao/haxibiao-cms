@@ -9,6 +9,12 @@ class Site extends Model
 {
     use HasFactory;
 
+    public $appends = ['data'];
+    public $casts   = [
+        'json' => 'array', //索引趋势数据
+        'data' => 'array', //今日百度提交配额
+    ];
+
     protected $guarded = [];
 
     public function scopeActive($query)
@@ -66,5 +72,16 @@ class Site extends Model
     public function related()
     {
         return $this->hasMany(Siteable::class);
+    }
+
+    //attrs
+    public function getBaiduSuccessAttribute()
+    {
+        return $this->data['baidu_success'] ?? 0;
+    }
+
+    public function getBaiduRemainAttribute()
+    {
+        return $this->data['baidu_remain'] ?? '未知';
     }
 }
