@@ -72,7 +72,7 @@ class Site extends Resource
                 return $this->movies()->count();
             }),
             Text::make('查询配额', function () {
-                return 'API提交成功:' . $this->baidu_success . ', 剩余:' . $this->baidu_remain . ' <a href="/seo/pushResult" target="_blank">刷新百度</a>';
+                return '成功:' . $this->baidu_success . ', 剩余:' . $this->baidu_remain . ' <a href="//' . $this->domain . '/seo/pushResult" target="_blank">刷新百度</a>';
             })->asHtml(),
             Text::make('今日百度提交', function () {
                 $count_movies_pushed   = $this->movies()->where('siteables.baidu_pushed_at', '>', today())->count();
