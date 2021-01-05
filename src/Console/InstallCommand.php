@@ -13,7 +13,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cms:install';
+    protected $signature = 'cms:install {--force : 强制全新安装}';
 
     /**
      * The Console command description.
@@ -44,7 +44,10 @@ class InstallCommand extends Command
         //复制所有app stubs
         foreach (glob(__DIR__ . '/stubs/*.stub') as $filepath) {
             $filename = basename($filepath);
-            copy($filepath, app_path(str_replace(".stub", ".php", $filename)));
+            $dest     = app_path(str_replace(".stub", ".php", $filename));
+            if (!file_exists($dest) || $this->option('force')) {
+                copy($filepath, $dest);
+            }
         }
         //复制所有nova stubs
         if (!is_dir(app_path('Nova'))) {
@@ -52,7 +55,10 @@ class InstallCommand extends Command
         }
         foreach (glob(__DIR__ . '/stubs/Nova/*.stub') as $filepath) {
             $filename = basename($filepath);
-            copy($filepath, app_path('Nova/' . str_replace(".stub", ".php", $filename)));
+            $dest     = app_path(str_replace(".stub", ".php", $filename));
+            if (!file_exists($dest) || $this->option('force')) {
+                copy($filepath, $dest);
+            }
         }
     }
 
@@ -60,7 +66,12 @@ class InstallCommand extends Command
     {
         $this->call('vendor:publish', [
             '--tag'   => 'cms-config',
-            '--force' => true,
+            '--force' => $this->option('force'),
+        ]);
+
+        $this->call('vendor:publish', [
+            '--tag'   => 'cms-resources',
+            '--force' => $this->option('force'),
         ]);
     }
 

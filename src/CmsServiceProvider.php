@@ -60,10 +60,15 @@ class CmsServiceProvider extends ServiceProvider
             //数据库
             $this->loadMigrationsFrom($this->app->make('path.haxibiao-cms.migrations'));
 
-            //配置文件
+            //发布 -配置文件
             $this->publishes([
                 __DIR__ . '/../config/cms.php' => config_path('cms.php'),
             ], 'cms-config');
+
+            //发布 -resoucres
+            $this->publishes([
+                __DIR__ . '/../resources/views' => base_path('resources/views'),
+            ], 'cms-resources');
 
         }
 
