@@ -11,27 +11,31 @@ class SeoController extends Controller
 {
     public function baiduInclude()
     {
-        $beian = cache()->remember('neihan_beian_baidu_include_check', 60 * 24, function () {
+        //今天的索引
+        $beian = cache()->remember('baidu_include_' . today()->toDateString(), 60 * 72, function () {
             $urls = "";
-            foreach (neihan_beian_domains() as $domain => $name) {
-                // $urls .= "\nwww." . $domain;
+            foreach (Site::active()->all() as $site) {
+                $domain = $site->domain;
                 $urls .= "\n" . $domain;
             }
             $urls = ltrim($urls);
             return baidu_include_check($urls);
         });
-        $neihan = cache()->remember('movie_sites_baidu_include_check', 60 * 24, function () {
+
+        //昨天的索引
+        $neihan = cache()->remember('baidu_include_' . today()->subDay()->toDateString(), 60 * 72, function () {
             $urls = "";
-            foreach (neihan_sites_domains() as $domain => $name) {
-                // $urls .= "\nwww." . $domain;
+            foreach (Site::active()->all() as $site) {
+                $domain = $site->domain;
                 $urls .= "\n" . $domain;
             }
             $urls = ltrim($urls);
             return baidu_include_check($urls);
         });
+
         return view('seo.baidu_include')
-            ->with('beian', $beian)
-            ->with('neihan', $neihan);
+            ->with('today', $beian)
+            ->with('yesterday', $neihan);
     }
 
     public function robot()
