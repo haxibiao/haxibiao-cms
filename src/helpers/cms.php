@@ -130,6 +130,21 @@ function cms_get_site()
 }
 
 /**
+ * 获得当前cms的主题
+ */
+function cms_seo_theme()
+{
+    //站群模式
+    if (config('cms.multi_domains')) {
+        if ($site = cms_get_site()) {
+            return $site->theme;
+        }
+    }
+    //兼容旧版本seo配置里统计 matomo
+    return null;
+}
+
+/**
  * 首页置顶电影(站群)
  */
 function cmsTopMovies($top = 4)
