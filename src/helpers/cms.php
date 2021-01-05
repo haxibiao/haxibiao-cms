@@ -169,9 +169,10 @@ function cmsTopCategories($top = 7)
 {
     //站群模式
     if (config('cms.multi_domains')) {
-        $site = cms_get_site();
-        if ($site->categories(true)->count()) {
-            return $site->categories(true)->latest('siteables.updated_at')->take($top)->get();
+        if ($site = cms_get_site()) {
+            if ($site->categories(true)->count()) {
+                return $site->categories(true)->latest('siteables.updated_at')->take($top)->get();
+            }
         }
     }
     return indexTopCategories($top);
