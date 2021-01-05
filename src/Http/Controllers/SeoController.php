@@ -14,7 +14,7 @@ class SeoController extends Controller
         //今天的索引
         $beian = cache()->remember('baidu_include_' . today()->toDateString(), 60 * 72, function () {
             $urls = "";
-            foreach (Site::active()->all() as $site) {
+            foreach (Site::active()->get() as $site) {
                 $domain = $site->domain;
                 $urls .= "\n" . $domain;
             }
@@ -25,7 +25,7 @@ class SeoController extends Controller
         //昨天的索引
         $neihan = cache()->remember('baidu_include_' . today()->subDay()->toDateString(), 60 * 72, function () {
             $urls = "";
-            foreach (Site::active()->all() as $site) {
+            foreach (Site::active()->get() as $site) {
                 $domain = $site->domain;
                 $urls .= "\n" . $domain;
             }
