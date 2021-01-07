@@ -9,8 +9,6 @@ class Site extends Model
 {
     use HasFactory;
 
-    public $appends = ['data'];
-
     public $casts = [
         'json' => 'array', //索引趋势数据
         'data' => 'array', //今日百度提交配额
@@ -84,10 +82,5 @@ class Site extends Model
     public function getBaiduRemainAttribute()
     {
         return $this->data['baidu_remain'] ?? '未知';
-    }
-
-    public function getDataAttribute()
-    {
-        return @json_decode($this->attributes['data']);
     }
 }
