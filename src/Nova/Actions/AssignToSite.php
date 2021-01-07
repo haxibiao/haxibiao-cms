@@ -55,7 +55,8 @@ class AssignToSite extends Action
                     $urls = array_slice($urls, 0, 3000);
                 }
 
-                $push_result = push_baidu($urls, $site->ziyuan_token, $site->domain);
+                $proxy = env('CMS_BAIDU_PUSH_PROXY',null);
+                $push_result = push_baidu($urls, $site->ziyuan_token, $site->domain,$proxy);
                 if ($push_result == "成功") {
                     //提交收录成功，记录时间
                     foreach ($models as $model) {
