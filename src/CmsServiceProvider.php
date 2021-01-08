@@ -4,7 +4,6 @@ namespace Haxibiao\Cms;
 
 use App\Site;
 use Haxibiao\Cms\Console\Commands\ArchiveTraffic;
-use Haxibiao\Cms\Console\Commands\BaiduInclude;
 use Haxibiao\Cms\Console\Commands\CmsUpdate;
 use Haxibiao\Cms\Console\Commands\SitemapGenerate;
 use Haxibiao\Cms\Console\InstallCommand;
@@ -35,7 +34,6 @@ class CmsServiceProvider extends ServiceProvider
             InstallCommand::class,
             SitemapGenerate::class,
             ArchiveTraffic::class,
-            BaiduInclude::class,
             CmsUpdate::class,
         ]);
     }
