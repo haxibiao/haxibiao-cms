@@ -2,6 +2,7 @@
 
 namespace Haxibiao\Cms\Http\Controllers;
 
+use App\Dimension;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Haxibiao\Cms\Site;
@@ -12,30 +13,81 @@ class SeoController extends Controller
     public function baiduInclude()
     {
         //今天的索引
-        $beian = cache()->remember('baidu_include_' . today()->toDateString(), 60 * 72, function () {
-            $urls = "";
-            foreach (Site::active()->get() as $site) {
-                $domain = $site->domain;
-                $urls .= "\n" . $domain;
+        $today = cache()->remember('baidu_include_' . today()->toDateString(), 60 * 72, function () {
+            $res = [];
+            $k = 0;
+            $dimensions = Dimension::where('name', '百度索引量')->where('date', today()->toDateString())->get();
+            foreach ($dimensions as $dimension) {
+                $res[$k]['url'] = $dimension->group;
+                $res[$k++]['收录'] = $dimension->value;
             }
-            $urls = ltrim($urls);
-            return baidu_include_check($urls);
+            return $res;
         });
 
         //昨天的索引
-        $neihan = cache()->remember('baidu_include_' . today()->subDay()->toDateString(), 60 * 72, function () {
-            $urls = "";
-            foreach (Site::active()->get() as $site) {
-                $domain = $site->domain;
-                $urls .= "\n" . $domain;
+        $yesterday = cache()->remember('baidu_include_' . today()->subDay()->toDateString(), 60 * 72, function () {
+            $res = [];
+            $k = 0;
+            $dimensions = Dimension::where('name', '百度索引量')->where('date', today()->subDay()->toDateString())->get();
+            foreach ($dimensions as $dimension) {
+                $res[$k]['url'] = $dimension->group;
+                $res[$k++]['收录'] = $dimension->value;
             }
-            $urls = ltrim($urls);
-            return baidu_include_check($urls);
+            return $res;
         });
 
+        //前天的索引
+        $third = cache()->remember('baidu_include_' . today()->subDay(2)->toDateString(), 60 * 72, function () {
+            $res = [];
+            $k = 0;
+            $dimensions = Dimension::where('name', '百度索引量')->where('date', today()->subDay(2)->toDateString())->get();
+            foreach ($dimensions as $dimension) {
+                $res[$k]['url'] = $dimension->group;
+                $res[$k++]['收录'] = $dimension->value;
+            }
+            return $res;
+        });
+
+        for($k=0;$k<count($today);$k++){
+            $todayValue = Dimension::where('group',$today[$k]['url'])
+            ->where('name', '百度索引量')
+            ->where('date', today()->toDateString())
+            ->first()->value;
+            $yesterdayValue = Dimension::where('group',$today[$k]['url'])
+            ->where('name', '百度索引量')
+            ->where('date', today()->subDay(1)->toDateString())
+            ->first()->value;
+            if($todayValue > $yesterdayValue){
+                $today[$k]['up'] = 1;
+            }else if($todayValue < $yesterdayValue){
+                $today[$k]['up'] = -1;
+            }else{
+                $today[$k]['up'] = 0;
+            }
+        }
+
+        for($k=0;$k<count($yesterday);$k++){
+            $yesterdayValue = Dimension::where('group',$today[$k]['url'])
+            ->where('name', '百度索引量')
+            ->where('date', today()->subDay(1)->toDateString())
+            ->first()->value;
+            $thirdValue = Dimension::where('group',$today[$k]['url'])
+            ->where('name', '百度索引量')
+            ->where('date', today()->subDay(2)->toDateString())
+            ->first()->value;
+            if($yesterdayValue > $thirdValue){
+                $yesterday[$k]['up'] = 1;
+            }else if($yesterdayValue < $thirdValue){
+                $yesterday[$k]['up'] = -1;
+            }else{
+                $yesterday[$k]['up'] = 0;
+            }
+        }
+
         return view('seo.baidu_include')
-            ->with('today', $beian)
-            ->with('yesterday', $neihan);
+            ->with('today', $today)
+            ->with('yesterday', $yesterday)
+            ->with('third', $third);
     }
 
     public function robot()
