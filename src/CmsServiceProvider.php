@@ -87,16 +87,13 @@ class CmsServiceProvider extends ServiceProvider
             $this->app->booted(function () {
                 $schedule = $this->app->make(Schedule::class);
                 // 每天定时归档seo流量
-                $schedule->command('archive:traffic')->dailyAt('1:00');;
+                $schedule->command('archive:traffic')->dailyAt('1:00');
 
                 // 自动更新站群首页资源
                 $schedule->command('cms:update')->dailyAt('2:00');
 
                 // 生成新的SiteMap
                 $schedule->command('sitemap:generate')->dailyAt('3:00');
-
-                // 保存每个站当天的百度索引量
-                $schedule->command('baidu:include')->dailyAt('4:00');
 
             });
         }
