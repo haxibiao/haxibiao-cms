@@ -33,33 +33,10 @@ class InstallCommand extends Command
         $this->vendorPublish();
 
         $this->info('复制 stubs ...');
-        $this->copyStubs();
+        copyStubs(__DIR__, $this->option('force'));
 
         $this->info('迁移数据库变化...');
         $this->call('migrate');
-    }
-
-    public function copyStubs()
-    {
-        //复制所有app stubs
-        foreach (glob(__DIR__ . '/stubs/*.stub') as $filepath) {
-            $filename = basename($filepath);
-            $dest     = app_path(str_replace(".stub", ".php", $filename));
-            if (!file_exists($dest) || $this->option('force')) {
-                copy($filepath, $dest);
-            }
-        }
-        //复制所有nova stubs
-        if (!is_dir(app_path('Nova'))) {
-            mkdir(app_path('Nova'));
-        }
-        foreach (glob(__DIR__ . '/stubs/Nova/*.stub') as $filepath) {
-            $filename = basename($filepath);
-            $dest     = app_path(str_replace(".stub", ".php", $filename));
-            if (!file_exists($dest) || $this->option('force')) {
-                copy($filepath, $dest);
-            }
-        }
     }
 
     public function vendorPublish()

@@ -6,11 +6,11 @@
 
 包含蜘蛛池管理，爬虫监控，站群站点地图，收录提交，收录查询，权重查询，收录监控，自动更新...
 
-## 主要依赖
+## 互相依赖
 
-1. haxibiao-config 系统配置，APP+ASO 配置，SEO 配置，广告配置
-2. haxibiao-content 内容分配到站群
-3. haxibiao-dimension 维度分析报表系统
+1. haxibiao/config SEO 配置自动适配站群
+2. haxibiao/content 分配到站群，内容 SEO 自动优化
+3. haxibiao/dimension SEO 流量维度分析，汇总到报表系统 haxibiao/nova
 
 ## 安装步骤
 
