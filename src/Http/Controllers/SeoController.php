@@ -15,9 +15,12 @@ class SeoController extends Controller
         $today = cache()->remember('baidu_include_' . today()->toDateString(), 60 * 72, function () {
             $data = [];
             foreach (Site::active()->get() as $site) {
-                $item['url']    = $site->domain;
-                $item['收录'] = $site->json['baidu'][today()->toDateString()] ?? 0;
-                $data[]         = $item;
+                $item['url']     = $site->domain;
+                $today_index     = $site->json['baidu'][today()->toDateString()] ?? 0;
+                $yesterday_index = $site->json['baidu'][today()->subDay()->toDateString()] ?? 0;
+                $item['收录']  = $today_index;
+                $item['up']      = $today_index - $yesterday_index;
+                $data[]          = $item;
             }
             return $data;
         });
@@ -26,9 +29,12 @@ class SeoController extends Controller
         $yesterday = cache()->remember('baidu_include_' . today()->subDay()->toDateString(), 60 * 72, function () {
             $data = [];
             foreach (Site::active()->get() as $site) {
-                $item['url']    = $site->domain;
-                $item['收录'] = $site->json['baidu'][today()->subDay()->toDateString()] ?? 0;
-                $data[]         = $item;
+                $item['url']     = $site->domain;
+                $today_index     = $site->json['baidu'][today()->subDay()->toDateString()] ?? 0;
+                $yesterday_index = $site->json['baidu'][today()->subDay(2)->toDateString()] ?? 0;
+                $item['收录']  = $today_index;
+                $item['up']      = $today_index - $yesterday_index;
+                $data[]          = $item;
             }
             return $data;
         });
