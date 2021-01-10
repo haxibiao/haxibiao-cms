@@ -2,7 +2,6 @@
 
 namespace Haxibiao\Cms\Http\Controllers;
 
-use App\Dimension;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Haxibiao\Cms\Site;
@@ -14,75 +13,36 @@ class SeoController extends Controller
     {
         //今天的索引
         $today = cache()->remember('baidu_include_' . today()->toDateString(), 60 * 72, function () {
-            $res = [];
-            $k = 0;
-            $dimensions = Dimension::where('name', '百度索引量')->where('date', today()->toDateString())->get();
-            foreach ($dimensions as $dimension) {
-                $res[$k]['url'] = $dimension->group;
-                $res[$k++]['收录'] = $dimension->value;
+            $data = [];
+            foreach (Site::active()->get() as $site) {
+                $item['url']    = $site->domain;
+                $item['收录'] = $site->json['baidu'][today()->toDateString()] ?? 0;
+                $data[]         = $item;
             }
-            return $res;
+            return $data;
         });
 
         //昨天的索引
         $yesterday = cache()->remember('baidu_include_' . today()->subDay()->toDateString(), 60 * 72, function () {
-            $res = [];
-            $k = 0;
-            $dimensions = Dimension::where('name', '百度索引量')->where('date', today()->subDay()->toDateString())->get();
-            foreach ($dimensions as $dimension) {
-                $res[$k]['url'] = $dimension->group;
-                $res[$k++]['收录'] = $dimension->value;
+            $data = [];
+            foreach (Site::active()->get() as $site) {
+                $item['url']    = $site->domain;
+                $item['收录'] = $site->json['baidu'][today()->subDay()->toDateString()] ?? 0;
+                $data[]         = $item;
             }
-            return $res;
+            return $data;
         });
 
         //前天的索引
         $third = cache()->remember('baidu_include_' . today()->subDay(2)->toDateString(), 60 * 72, function () {
-            $res = [];
-            $k = 0;
-            $dimensions = Dimension::where('name', '百度索引量')->where('date', today()->subDay(2)->toDateString())->get();
-            foreach ($dimensions as $dimension) {
-                $res[$k]['url'] = $dimension->group;
-                $res[$k++]['收录'] = $dimension->value;
+            $data = [];
+            foreach (Site::active()->get() as $site) {
+                $item['url']    = $site->domain;
+                $item['收录'] = $site->json['baidu'][today()->subDay(2)->toDateString()] ?? 0;
+                $data[]         = $item;
             }
-            return $res;
+            return $data;
         });
-
-        for($k=0;$k<count($today);$k++){
-            $todayValue = Dimension::where('group',$today[$k]['url'])
-            ->where('name', '百度索引量')
-            ->where('date', today()->toDateString())
-            ->first()->value;
-            $yesterdayValue = Dimension::where('group',$today[$k]['url'])
-            ->where('name', '百度索引量')
-            ->where('date', today()->subDay(1)->toDateString())
-            ->first()->value;
-            if($todayValue > $yesterdayValue){
-                $today[$k]['up'] = 1;
-            }else if($todayValue < $yesterdayValue){
-                $today[$k]['up'] = -1;
-            }else{
-                $today[$k]['up'] = 0;
-            }
-        }
-
-        for($k=0;$k<count($yesterday);$k++){
-            $yesterdayValue = Dimension::where('group',$today[$k]['url'])
-            ->where('name', '百度索引量')
-            ->where('date', today()->subDay(1)->toDateString())
-            ->first()->value;
-            $thirdValue = Dimension::where('group',$today[$k]['url'])
-            ->where('name', '百度索引量')
-            ->where('date', today()->subDay(2)->toDateString())
-            ->first()->value;
-            if($yesterdayValue > $thirdValue){
-                $yesterday[$k]['up'] = 1;
-            }else if($yesterdayValue < $thirdValue){
-                $yesterday[$k]['up'] = -1;
-            }else{
-                $yesterday[$k]['up'] = 0;
-            }
-        }
 
         return view('seo.baidu_include')
             ->with('today', $today)
