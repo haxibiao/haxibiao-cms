@@ -66,11 +66,11 @@ class CmsUpdate extends Command
             // model is category
             if(data_get($related,'siteable_type',null) == 'categories'){
                 $category = $related->siteable;
-                $category = $category->load('related.categorized');
+                $category = $category->load('related.categorizable');
                 $relatedListOfCategory = data_get($category,'related');
                 foreach ($relatedListOfCategory as $relatedOfCategory){
-                    $categorized = $relatedOfCategory->categorized;
-                    $siteable = $categorized->siteable()
+                    $categorizable = $relatedOfCategory->categorizable;
+                    $siteable = $categorizable->siteable()
                         ->where('site_id',$site->id)
                         ->first();
 
@@ -79,7 +79,7 @@ class CmsUpdate extends Command
                         self::updateModel($siteable);
                         continue;
                     }
-                    $categorized->sites()->syncWithoutDetaching([
+                    $categorizable->sites()->syncWithoutDetaching([
                         $site->id => [
                             'updated_at' => Carbon::today()
                         ]
