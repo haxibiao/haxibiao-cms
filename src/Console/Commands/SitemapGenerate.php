@@ -83,7 +83,7 @@ class SitemapGenerate extends Command
             }
 
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = storage_path($relativePath);
+            $path = \Storage::disk('public')->path($relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
@@ -117,7 +117,7 @@ class SitemapGenerate extends Command
                 );
             }
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = storage_path($relativePath);
+            $path = \Storage::disk('public')->path($relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
@@ -187,7 +187,7 @@ class SitemapGenerate extends Command
                 );
             }
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = public_path("storage/" . $relativePath);
+            $path = Storage::disk('public')->path($relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
@@ -224,7 +224,7 @@ class SitemapGenerate extends Command
                 );
             }
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = public_path("storage/" . $relativePath);
+            $path = Storage::disk('public')->path($relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
