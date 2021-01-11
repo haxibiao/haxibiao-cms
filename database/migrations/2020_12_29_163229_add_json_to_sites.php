@@ -14,7 +14,9 @@ class AddJsonToSites extends Migration
     public function up()
     {
         Schema::table('sites', function (Blueprint $table) {
-            $table->json('json')->nullable()->comment('最近30天的百度索引量');
+            if (!Schema::hasColumn('sites', 'json')) {
+                $table->json('json')->nullable()->comment('最近30天的百度索引量');
+            }
         });
     }
 
