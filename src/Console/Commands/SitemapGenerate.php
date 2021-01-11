@@ -83,7 +83,7 @@ class SitemapGenerate extends Command
             }
 
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = storage_path("storage/" . $relativePath);
+            $path = storage_path($relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
@@ -117,7 +117,7 @@ class SitemapGenerate extends Command
                 );
             }
             $sitemapGenerator->writeToDisk('public', $relativePath);
-            $path = storage_path("storage/" . $relativePath);
+            $path = storage_path($relativePath);
             if (file_exists($path . '.gz')) {
                 unlink($path . '.gz');
             }
