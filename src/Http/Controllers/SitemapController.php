@@ -34,20 +34,22 @@ class SitemapController extends Controller
     public function name_en($name_en)
     {
         // XML 格式
-        $endWithXml = ends_with($name_en, '.xml');
+        $endWithXml     = ends_with($name_en, '.xml');
+        $relativePath   = 'sitemap/' . get_domain() . '/' . $name_en;
+
+        $existsSiteMapContent = Storage::disk('public')->exists($relativePath);
+        if (!$existsSiteMapContent) {
+            abort(404);
+        }
+
         if ($endWithXml) {
-            $siteMapContent = Storage::disk('public')->get('sitemap/' . get_domain() . '/' . $name_en);
-            if (!$siteMapContent) {
-                abort(404);
-            }
+            $siteMapContent = Storage::disk('public')->get($relativePath);
             return response($siteMapContent)
                 ->header('Content-Type', 'text/xml');
         }
         // GZ 下载
-        $siteMapContent = Storage::disk('public')->get('sitemap/' . get_domain() . '/' . $name_en);
-        if (!$siteMapContent) {
-            abort(404);
-        }
+        $siteMapContent = Storage::disk('public')->get($relativePath);
+
         return response($siteMapContent)
             ->header('Content-Type', 'application/octet-stream');
     }
