@@ -72,11 +72,17 @@ class CmsServiceProvider extends ServiceProvider
 
         //cms站点
         $this->app->singleton('cms_site', function ($app) {
-            if ($site = Site::whereDomain(get_domain())->first()) {
-                return $site;
+
+            $modelStr = '\Haxibiao\Cms\Site';
+            if(class_exists('\App\Site')){
+                // \App\Site 是 \Haxibiao\Cms\Site 的子类
+                $modelStr = '\App\Site';
+            }
+            if($site = $modelStr::whereDomain(get_domain())->first()){
+                return  $site;
             }
             //默认返回最后一个站点
-            return Site::latest('id')->first();
+            return $modelStr::latest('id')->first();
         });
 
         $this->registerMorphMap();
