@@ -1,51 +1,51 @@
 {
-  "name": "haxibiao/cms",
-  "description": "哈希表CMS",
-  "type": "project",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "ivan",
-      "email": "ivan@haxibiao.com"
-    }
-  ],
-  "require": {
-    "jenssegers/agent": "^2.6",
-    "haxibiao/config": "*",
-    "haxibiao/content": "*",
-    "haxibiao/dimension": "*"
-  },
-  "repositories": {
-    "config": {
-      "type": "vcs",
-      "url": "http://code.haxibiao.cn/packages/haxibiao-config.git"
+    "name": "haxibiao/cms",
+    "description": "哈希表CMS",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ivan",
+            "email": "ivan@haxibiao.com"
+        }
+    ],
+    "require": {
+        "jenssegers/agent": "^2.6",
+        "haxibiao/config": "*",
+        "haxibiao/content": "*",
+        "haxibiao/dimension": "*"
     },
-    "content": {
-      "type": "vcs",
-      "url": "http://code.haxibiao.cn/packages/haxibiao-content.git"
+    "repositories": {
+        "config": {
+            "type": "vcs",
+            "url": "http://code.haxibiao.cn/packages/haxibiao-config.git"
+        },
+        "content": {
+            "type": "vcs",
+            "url": "http://code.haxibiao.cn/packages/haxibiao-content.git"
+        },
+        "dimension": {
+            "type": "vcs",
+            "url": "http://code.haxibiao.cn/packages/haxibiao-dimension.git"
+        }
     },
-    "dimension": {
-      "type": "vcs",
-      "url": "http://code.haxibiao.cn/packages/haxibiao-dimension.git"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Haxibiao\\Cms\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Haxibiao\\Cms\\CmsServiceProvider"
+            ],
+            "aliases": {}
+        }
     }
-  },
-  "minimum-stability": "dev",
-  "autoload": {
-    "psr-0": {
-      "Haxibiao\\Cms\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "classmap": [
-      "tests/"
-    ]
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Haxibiao\\Cms\\CmsServiceProvider"
-      ],
-      "aliases": {}
-    }
-  }
 }
