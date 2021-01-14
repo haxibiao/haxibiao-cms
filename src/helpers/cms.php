@@ -1,6 +1,17 @@
 <?php
 
 use Haxibiao\Cms\Siteable;
+use Illuminate\Support\Str;
+
+function cms_url($model){
+    $site = cms_get_site();
+    $url = sprintf('https://%s/%s/%s',
+        data_get($site,'domain'),
+        Str::singular($model->getTable()),
+        $model->id
+    );
+    return $url;
+}
 
 function cms_morph_map()
 {
@@ -152,8 +163,11 @@ function cmsTopMovies($top = 4)
     //站群模式
     if (config('cms.multi_domains')) {
         if ($site = cms_get_site()) {
-            if ($site->movies()->count()) {
-                return $site->movies()->take($top)->get();
+            if ($site->stickyMovies()->byStickableName('首页-电影')->count()) {
+                return $site->stickyMovies()
+                    ->byStickableName('首页-电影')
+                    ->take($top)
+                    ->get();
             }
         }
     }
@@ -168,8 +182,11 @@ function cmsTopVideos($top = 4)
     //站群模式
     if (config('cms.multi_domains')) {
         if ($site = cms_get_site()) {
-            if ($site->posts(true)->count()) {
-                return $site->posts(true)->has('video')->take($top)->get();
+            if ($site->stickyPosts()->byStickableName('首页-视频')->count()) {
+                return $site->stickyPosts()
+                    ->has('video')
+                    ->byStickableName('首页-视频')
+                    ->take($top)->get();
             }
         }
     }
@@ -185,8 +202,10 @@ function cmsTopCategories($top = 7)
     //站群模式
     if (config('cms.multi_domains')) {
         if ($site = cms_get_site()) {
-            if ($site->categories(true)->count()) {
-                return $site->categories(true)->latest('siteables.updated_at')->take($top)->get();
+            if ($site->stickyCategories()->byStickableName('首页-专题')->count()) {
+                return $site->stickyCategories()
+                    ->byStickableName('首页-专题')
+                    ->take($top)->get();
             }
         }
     }
@@ -202,10 +221,11 @@ function cmsTopArticles()
     //站群模式
     if (config('cms.multi_domains')) {
         $site = cms_get_site();
-        if ($site->articles(true)->count()) {
-            $qb = $site->articles(true)
+        if ($site->stickyArticles()->byStickableName('首页-文章列表')->count()) {
+            $qb = $site->stickyArticles()
+                ->byStickableName('首页-文章列表')
                 ->exclude(['body', 'json'])
-                ->latest('siteables.updated_at');
+                ->latest('stickables.updated_at');
             return smartPager($qb);
         }
     }
