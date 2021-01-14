@@ -46,7 +46,7 @@ class AssignToSite extends Action
             $urls = [];
             foreach ($models as $model) {
                 $model->assignToSite($site->id);
-                $urls[] = cms_url($model);
+                $urls[] = cms_url($model,$site);
             }
             //提交百度收录
             if ($fields->is_push && $site->ziyuan_token) {
