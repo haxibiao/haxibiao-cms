@@ -3,8 +3,7 @@
 use Haxibiao\Cms\Siteable;
 use Illuminate\Support\Str;
 
-function cms_url($model){
-    $site = cms_get_site();
+function cms_url($model,$site){
     $url = sprintf('https://%s/%s/%s',
         data_get($site,'domain'),
         Str::singular($model->getTable()),
