@@ -4,6 +4,7 @@ namespace Haxibiao\Cms\Nova;
 
 use App\Nova\User;
 use Haxibiao\Cms\Nova\Actions\AssignToSite;
+use Haxibiao\Cms\Nova\Actions\StickyToSite;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -112,6 +113,7 @@ class SitePost extends Resource
     {
         return [
             new AssignToSite,
+            (new StickyToSite)->withMeta(['type' => 'posts']),
         ];
     }
 }

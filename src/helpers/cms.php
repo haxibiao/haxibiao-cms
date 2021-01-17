@@ -3,9 +3,42 @@
 use Haxibiao\Cms\Siteable;
 use Illuminate\Support\Str;
 
-function cms_url($model,$site){
+/**
+ * 站群资源可以置顶的位置对照表
+ */
+function stickable_areas($type = null)
+{
+    $areas = [
+        'movies'      => [
+            '视频页-电影' => '视频页-电影',
+            '首页-电影'  => '首页-电影',
+        ],
+        'posts'       => [
+            '首页-视频' => '首页-视频',
+        ],
+        'articles'    => [
+            '首页-文章列表'  => '首页-文章列表',
+            '视频页-电影图解' => '视频页-电影图解',
+        ],
+        'categories'  => [
+            '首页-专题'    => '首页-专题',
+            '视频页-视频专题' => '视频页-视频专题',
+            '视频页-图解专题' => '视频页-图解专题',
+        ],
+        'collections' => [
+            '视频页-热门合集' => '视频页-热门合集',
+        ],
+    ];
+    if ($type) {
+        return $areas[$type] ?? null;
+    }
+    return $areas;
+}
+
+function cms_url($model, $site)
+{
     $url = sprintf('https://%s/%s/%s',
-        data_get($site,'domain'),
+        data_get($site, 'domain'),
         Str::singular($model->getTable()),
         $model->id
     );

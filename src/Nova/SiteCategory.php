@@ -6,6 +6,7 @@ use App\Nova\Article;
 use App\Nova\Resource;
 use App\Nova\User;
 use Haxibiao\Cms\Nova\Actions\AssignToSite;
+use Haxibiao\Cms\Nova\Actions\StickyToSite;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -99,6 +100,7 @@ class SiteCategory extends Resource
     {
         return [
             new AssignToSite,
+            (new StickyToSite)->withMeta(['type' => 'categories']),
         ];
     }
 }

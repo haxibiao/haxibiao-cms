@@ -2,11 +2,13 @@
 
 namespace Haxibiao\Cms;
 
+use Haxibiao\Cms\Traits\StickableSite;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
 {
+    use StickableSite;
     use HasFactory;
 
     public $casts = [
@@ -19,6 +21,11 @@ class Site extends Model
     public function scopeActive($query)
     {
         return $query->where('active', true);
+    }
+
+    public function scopeBySiteIds($query, $siteIds)
+    {
+        return $query->whereIn('id', $siteIds);
     }
 
     //专题

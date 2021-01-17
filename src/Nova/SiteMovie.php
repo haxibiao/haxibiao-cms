@@ -3,6 +3,7 @@
 namespace Haxibiao\Cms\Nova;
 
 use Haxibiao\Cms\Nova\Actions\AssignToSite;
+use Haxibiao\Cms\Nova\Actions\StickyToSite;
 use Haxibiao\Cms\Nova\Filters\MoviesByRegion;
 use Haxibiao\Cms\Nova\Filters\MoviesByStyle;
 use Haxibiao\Cms\Nova\Filters\MoviesByType;
@@ -56,6 +57,7 @@ class SiteMovie extends NovaMovie
     {
         return [
             new AssignToSite,
+            (new StickyToSite)->withMeta(['type' => 'movies']),
         ];
     }
 }
