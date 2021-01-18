@@ -24,5 +24,10 @@ Route::get('/sitemap', 'SitemapController@index');
 Route::get('/sitemap.xml', 'SitemapController@index');
 //单个地图
 Route::get('/sitemap/{name_en}', 'SitemapController@name_en');
+
 // robots
 Route::get('/robots.txt', 'SeoController@robot');
+
+// robots
+Route::get('/shenma-site-verification.txt', 'SeoController@verification');
+Route::get('/sogousiteverification.txt', 'SeoController@verification');

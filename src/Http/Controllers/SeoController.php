@@ -56,6 +56,33 @@ class SeoController extends Controller
             ->with('third', $third);
     }
 
+    public function verification()
+    {
+        $meta = get_seo_meta();
+        $url  = request()->url();
+
+        if (str_contains($url, 'sogou')) {
+            preg_match_all('/<meta.*name="sogou_site_verification".*content="(.*)".*>/', $meta, $matches);
+            $sogou = data_get($matches, '1.0');
+            if ($sogou) {
+                return response($sogou)
+                    ->header('Content-Type', 'text/html');
+            }
+            abort(404);
+        }
+
+        if (str_contains($url, 'shenma')) {
+            preg_match_all('/<meta.*name="shenma-site-verification".*content="(.*)".*>/', $meta, $matches);
+            $shenma = data_get($matches, '1.0');
+            if ($shenma) {
+                return response('shenma-site-verification:' . $shenma)
+                    ->header('Content-Type', 'text/plain');
+            }
+            abort(404);
+        }
+        abort(404);
+    }
+
     public function robot()
     {
         $domain       = get_domain();
