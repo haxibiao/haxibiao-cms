@@ -46,7 +46,7 @@ class AssignToSite extends Action
             $urls = [];
             foreach ($models as $model) {
                 $model->assignToSite($site->id);
-                $urls[] = cms_url($model,$site);
+                $urls[] = cms_url($model, $site);
             }
             //提交百度收录
             if ($fields->is_push && $site->ziyuan_token) {
@@ -55,8 +55,8 @@ class AssignToSite extends Action
                     $urls = array_slice($urls, 0, 3000);
                 }
 
-                $proxy = env('CMS_BAIDU_PUSH_PROXY',null);
-                $push_result = push_baidu($urls, $site->ziyuan_token, $site->domain,$proxy);
+                $proxy       = env('CMS_BAIDU_PUSH_PROXY', null);
+                $push_result = push_baidu($urls, $site->ziyuan_token, $site->domain, $proxy);
                 if ($push_result == "成功") {
                     //提交收录成功，记录时间
                     foreach ($models as $model) {
@@ -99,7 +99,7 @@ class AssignToSite extends Action
     public function fields()
     {
         $siteOptions = [];
-        foreach (Site::all() as $site) {
+        foreach (Site::active()->get() as $site) {
             $siteOptions[$site->id] = $site->name . "(" . $site->domain . ")";
         }
         return [
