@@ -198,6 +198,7 @@ function cmsTopMovies($top = 4)
             if ($site->stickyMovies()->byStickableName('首页-电影')->count()) {
                 return $site->stickyMovies()
                     ->byStickableName('首页-电影')
+                    ->latest('stickables.updated_at')
                     ->take($top)
                     ->get();
             }
@@ -216,8 +217,8 @@ function cmsTopVideos($top = 4)
         if ($site = cms_get_site()) {
             if ($site->stickyPosts()->byStickableName('首页-视频')->count()) {
                 return $site->stickyPosts()
-                    ->has('video')
                     ->byStickableName('首页-视频')
+                    ->latest('stickables.updated_at')
                     ->take($top)->get();
             }
         }
@@ -237,6 +238,7 @@ function cmsTopCategories($top = 7)
             if ($site->stickyCategories()->byStickableName('首页-专题')->count()) {
                 return $site->stickyCategories()
                     ->byStickableName('首页-专题')
+                    ->latest('stickables.updated_at')
                     ->take($top)->get();
             }
         }
