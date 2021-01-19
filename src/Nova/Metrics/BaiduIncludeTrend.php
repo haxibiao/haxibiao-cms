@@ -23,6 +23,10 @@ class BaiduIncludeTrend extends Trend
 
         $site = \App\Site::where('domain', $range)->first();
         $json = $site->json;
+        if($site === null) {
+            return (new TrendResult(end($data)))->trend($data)
+            ->suffix("昨日: 0 最大: 0");
+        }
         if ($json) {
             foreach ($json['baidu'] as $date => $value) {
                 $data[$date] = $value;
