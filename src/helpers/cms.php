@@ -255,7 +255,7 @@ function cmsTopArticles()
     //站群模式
     if (config('cms.multi_domains')) {
         $site = cms_get_site();
-        if ($site->stickyArticles()->byStickableName('首页-文章列表')->count()) {
+        if ($site && $site->stickyArticles()->byStickableName('首页-文章列表')->count()) {
             $qb = $site->stickyArticles()
                 ->byStickableName('首页-文章列表')
                 ->exclude(['body', 'json'])
