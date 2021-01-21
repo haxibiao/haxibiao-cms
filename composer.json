@@ -10,6 +10,8 @@
         }
     ],
     "require": {
+        "php": ">=7.3",
+        "laravel/framework": "^8.0",
         "jenssegers/agent": "^2.6",
         "haxibiao/config": "*",
         "haxibiao/content": "*",
