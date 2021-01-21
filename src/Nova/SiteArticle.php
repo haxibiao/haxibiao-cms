@@ -5,6 +5,7 @@ namespace Haxibiao\Cms\Nova;
 use Halimtuhu\ArrayImages\ArrayImages;
 use Haxibiao\Cms\Nova\Actions\AssignToSite;
 use Haxibiao\Cms\Nova\Actions\StickyToSite;
+use Haxibiao\Cms\Nova\Filters\ArticleByType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Nova\Fields\BelongsTo;
@@ -104,7 +105,9 @@ class SiteArticle extends Resource
 
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new ArticleByType,
+        ];
     }
 
     public function lenses(Request $request)
