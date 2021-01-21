@@ -20,6 +20,7 @@ class SiteCategory extends Resource
     public static $group  = 'CMS站群';
     public static $model  = 'Haxibiao\Cms\Category';
     public static $title  = 'name';
+    public static $perPageOptions = [25, 50, 100, 500, 1000];
     public static $search = [
         'id', 'name', 'name_en',
     ];

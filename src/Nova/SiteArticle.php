@@ -20,6 +20,7 @@ use Laravel\Nova\Resource;
 class SiteArticle extends Resource
 {
     public static $group  = 'CMS站群';
+    public static $perPageOptions = [25, 50, 100, 500, 1000];
     public static $model  = 'Haxibiao\Cms\Article';
     public static $title  = 'title';
     public static $with   = ['user', 'category', 'video'];

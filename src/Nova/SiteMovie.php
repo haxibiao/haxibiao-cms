@@ -15,6 +15,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 class SiteMovie extends NovaMovie
 {
     public static $group = "CMS站群";
+    public static $perPageOptions = [25, 50, 100, 500, 1000];
     public static $model = 'Haxibiao\Cms\Movie';
 
     //过滤草稿状态的
