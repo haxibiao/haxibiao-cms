@@ -7,7 +7,7 @@ use Haxibiao\Cms\Site;
 trait StickableItem
 {
 
-    public static function bootCanBeSticky()
+    public static function bootStickable()
     {
         // 资源移除时候，自动移除置顶逻辑
         static::deleted(function ($model) {

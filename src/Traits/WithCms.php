@@ -5,7 +5,7 @@ use Haxibiao\Cms\Site;
 use Haxibiao\Cms\Siteable;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-trait PlayWithCms
+trait WithCms
 {
     public function sites(): MorphToMany
     {
