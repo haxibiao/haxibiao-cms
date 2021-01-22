@@ -2,11 +2,14 @@
 
 namespace Haxibiao\Cms\Traits;
 
+use Haxibiao\Cms\Article;
+use Haxibiao\Cms\Category;
+use Haxibiao\Cms\Movie;
+use Haxibiao\Cms\Post;
 use Haxibiao\Cms\Site;
 
-trait StickableItem
+trait Stickable
 {
-
     public static function bootStickable()
     {
         // 资源移除时候，自动移除置顶逻辑
@@ -19,14 +22,14 @@ trait StickableItem
 
     public function stickSites()
     {
-        return $this->morphToMany(\App\Site::class, 'item', 'stickables')
+        return $this->morphToMany(Site::class, 'item', 'stickables')
             ->withPivot(['name', 'page', 'area'])
             ->withTimestamps();
     }
 
     public function related()
     {
-        return $this->morphMany(\App\Stickable::class, 'item');
+        return $this->morphMany(Haxibiao\Cms\Stickable::class, 'item');
     }
 
     /**
@@ -74,5 +77,38 @@ trait StickableItem
     public function scopeByStickableArea($query, $area)
     {
         return $query->where('stickables.area', $area);
+    }
+
+    //  ====  下面是站点的置顶特性 ===
+    public function stickyArticles()
+    {
+        return $this->stickable(Article::class);
+    }
+
+    public function stickyMovies()
+    {
+        return $this->stickable(Movie::class);
+    }
+
+    public function stickyPosts()
+    {
+        return $this->stickable(Post::class);
+    }
+
+    public function stickyCategories()
+    {
+        return $this->stickable(Category::class);
+    }
+
+    public function stickables()
+    {
+        return $this->hasMany(Haxibiao\Cms\Stickable::class);
+    }
+
+    public function stickable($related)
+    {
+        return $this->morphedByMany($related, 'item', 'stickables')
+            ->withPivot(['name', 'page', 'area'])
+            ->withTimestamps();
     }
 }

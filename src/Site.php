@@ -2,13 +2,13 @@
 
 namespace Haxibiao\Cms;
 
-use Haxibiao\Cms\Traits\StickableSite;
+use Haxibiao\Cms\Traits\Stickable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
 {
-    use StickableSite;
+    use Stickable;
     use HasFactory;
 
     public $casts = [
