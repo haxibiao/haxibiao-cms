@@ -45,6 +45,7 @@ class Site extends Resource
             ID::make()->sortable(),
             Text::make('名称', 'name'),
             Text::make('站长', 'owner'),
+            Text::make('域名', 'domain'),
             Text::make('域名', function () {
                 return '<a href="//' . $this->domain . '" target="_blank">' . $this->domain . '</a>';
             })->asHtml(),
