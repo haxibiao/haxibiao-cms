@@ -26,6 +26,7 @@ class SitemapGenerate extends Command
 
     public function handle()
     {
+        ini_set('memory_limit', '1024M');
         $domain = $this->option('domain');
 
         //单个域名
