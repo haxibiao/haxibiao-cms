@@ -26,7 +26,7 @@ class CreateSitesTable extends Migration
             $table->string('keywords')->nullable();
             $table->string('description')->nullable();
             $table->string('ziyuan_token')->nullable()->comment('百度资源站长提交收录的token');
-            $table->string('footer_js')->nullable()->comment('底部js 支持如ga，mta，matomo统计等站长权限');
+            $table->text('footer_js')->nullable()->comment('底部js 支持如ga，mta，matomo统计等站长权限');
             $table->string('verify_meta')->nullable()->comment('站长验证用meta');
             $table->timestamps();
         });
