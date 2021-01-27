@@ -52,6 +52,7 @@ function cms_morph_map()
         'articles'   => 'Haxibiao\Cms\Article',
         'posts'      => 'Haxibiao\Cms\Post',
         'movies'     => 'Haxibiao\Cms\Movie',
+        'siteables'  => 'Haxibiao\Cms\Siteable',
     ];
 }
 

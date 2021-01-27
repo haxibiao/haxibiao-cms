@@ -7,6 +7,7 @@ use Haxibiao\Cms\Category;
 use Haxibiao\Cms\Movie;
 use Haxibiao\Cms\Post;
 use Haxibiao\Cms\Site;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait Stickable
 {
@@ -20,14 +21,17 @@ trait Stickable
         });
     }
 
-    public function stickSites()
+    /**
+     * 内容已置顶到的站点
+     */
+    public function stickToSites()
     {
         return $this->morphToMany(Site::class, 'item', 'stickables')
             ->withPivot(['name', 'page', 'area'])
             ->withTimestamps();
     }
 
-    public function related()
+    public function related(): MorphMany
     {
         return $this->morphMany(Haxibiao\Cms\Stickable::class, 'item');
     }
@@ -39,14 +43,14 @@ trait Stickable
     {
         $sites = Site::bySiteIds($site_ids)->get();
         foreach ($sites as $site) {
-            $count = $this->stickSites()->when($name, function ($q) use ($name) {
+            $count = $this->stickToSites()->when($name, function ($q) use ($name) {
                 $q->where('stickables.name', $name);
             })->where('site_id', $site->id)->count();
 
             if ($count >= 1) {
                 continue;
             } else {
-                $this->stickSites()->attach([
+                $this->stickToSites()->attach([
                     $site->id => [
                         'name' => $name,
                         'page' => $page,
@@ -60,7 +64,7 @@ trait Stickable
 
     public function unStickByIds($site_ids)
     {
-        $this->stickSites()->detach($site_ids);
+        $this->stickToSites()->detach($site_ids);
         return $this;
     }
 
