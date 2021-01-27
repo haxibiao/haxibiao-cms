@@ -7,6 +7,7 @@ use Haxibiao\Cms\Category;
 use Haxibiao\Cms\Movie;
 use Haxibiao\Cms\Post;
 use Haxibiao\Cms\Site;
+use Haxibiao\Cms\Stickable as StickableModel;
 
 trait Stickable
 {
@@ -29,7 +30,7 @@ trait Stickable
 
     public function related()
     {
-        return $this->morphMany(Haxibiao\Cms\Stickable::class, 'item');
+        return $this->morphMany(Stickable::class, 'item');
     }
 
     /**
@@ -102,7 +103,7 @@ trait Stickable
 
     public function stickables()
     {
-        return $this->hasMany(Haxibiao\Cms\Stickable::class);
+        return $this->hasMany(StickableModel::class);
     }
 
     public function stickable($related)
