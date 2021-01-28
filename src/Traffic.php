@@ -2,7 +2,7 @@
 
 namespace Haxibiao\Cms;
 
-Haxibiao\Breeze\Traits\HasFactory;
+use Haxibiao\Breeze\Traits\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**

@@ -2,8 +2,8 @@
 
 namespace Haxibiao\Cms;
 
+use Haxibiao\Breeze\Traits\HasFactory;
 use Haxibiao\Cms\Traits\Stickable;
-Haxibiao\Breeze\Traits\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
