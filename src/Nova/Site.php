@@ -3,6 +3,7 @@
 namespace Haxibiao\Cms\Nova;
 
 use App\Nova\Resource;
+use Haxibiao\Cms\Nova\Actions\SeoWorkAction;
 use Haxibiao\Cms\Nova\Metrics\SiteOwnerPartition;
 use Haxibiao\Cms\Nova\SiteArticle;
 use Haxibiao\Cms\Nova\SitePost;
@@ -75,6 +76,7 @@ class Site extends Resource
             Text::make('查询配额', function () {
                 return '成功:' . $this->baidu_success . ', 剩余:' . $this->baidu_remain . ' <a href="//' . $this->domain . '/seo/pushResult" target="_blank">刷新百度</a>';
             })->asHtml(),
+
             Text::make('今日百度提交', function () {
                 $count_movies_pushed   = $this->movies()->where('siteables.baidu_pushed_at', '>', today())->count();
                 $count_posts_pushed    = $this->posts()->where('siteables.baidu_pushed_at', '>', today())->count();
@@ -132,6 +134,8 @@ class Site extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new SeoWorkAction,
+        ];
     }
 }

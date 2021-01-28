@@ -7,6 +7,7 @@ use Haxibiao\Cms\Movie;
 use Haxibiao\Cms\Site;
 use Haxibiao\Cms\Video;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -17,7 +18,7 @@ class SeoWorker extends Command
      *
      * @var string
      */
-    protected $signature = 'seo:work {--submit_count= : 自动提交收录数量,必须是100的倍数} {--sync_count= : 每日sync数据条数}';
+    protected $signature = 'seo:work {--domain= : 指定操作站点域名} {--submit_count= : 自动提交收录数量,必须是100的倍数} {--sync_count= : 每日sync数据条数}';
 
     /**
      * The console command description.
@@ -52,9 +53,17 @@ class SeoWorker extends Command
         $this->sync_count   = $this->option('sync_count') ?? 5; //每日同步数据数量 默认5 暂支持article
 
         //都使用爱你城的article数据吧，目前内涵云上article只有懂代码和爱你城...后面其他站点添加内容进来再加这个option
-        // Artisan::command("article:sync --ainicheng.com --num={ $this->sync_count }");
+        Artisan::call("article:sync", [
+            "--domain" => "ainicheng.com",
+            "--num"    => $this->sync_count,
+        ]);
 
-        Site::whereNotNull('ziyuan_token')->chunkById(100, function ($sites) {
+        $qb = Site::whereNotNull('ziyuan_token');
+        if ($domain = $this->option('domain') ?? null) {
+            $qb->where('domain', $domain);
+        }
+
+        $qb->chunkById(100, function ($sites) {
             foreach ($sites as $site) {
                 //各个站点提交的百度api
                 $this->api = $this->api . $site->domain . '&token=' . $site->ziyuan_token;
