@@ -2,9 +2,9 @@
 
 namespace Haxibiao\Cms;
 
-use App\Site;
 use Haxibiao\Cms\Console\Commands\ArchiveTraffic;
 use Haxibiao\Cms\Console\Commands\CmsUpdate;
+use Haxibiao\Cms\Console\Commands\SeoWorker;
 use Haxibiao\Cms\Console\Commands\SitemapGenerate;
 use Haxibiao\Cms\Console\InstallCommand;
 use Haxibiao\Cms\Http\Middleware\SeoTraffic;
@@ -34,6 +34,7 @@ class CmsServiceProvider extends ServiceProvider
             InstallCommand::class,
             SitemapGenerate::class,
             ArchiveTraffic::class,
+            SeoWorker::class,
             CmsUpdate::class,
         ]);
     }
@@ -74,12 +75,12 @@ class CmsServiceProvider extends ServiceProvider
         $this->app->singleton('cms_site', function ($app) {
 
             $modelStr = '\Haxibiao\Cms\Site';
-            if(class_exists('\App\Site')){
+            if (class_exists('\App\Site')) {
                 // \App\Site 是 \Haxibiao\Cms\Site 的子类
                 $modelStr = '\App\Site';
             }
-            if($site = $modelStr::whereDomain(get_domain())->first()){
-                return  $site;
+            if ($site = $modelStr::whereDomain(get_domain())->first()) {
+                return $site;
             }
             //默认返回最后一个站点
             return $modelStr::latest('id')->first();
