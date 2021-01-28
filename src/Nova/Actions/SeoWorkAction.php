@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Nova;
 
@@ -35,6 +36,9 @@ class SeoWorkAction extends Action
             if ($sync_count = $fields->sync_count) {
                 $data["--sync_count"] = $sync_count;
             }
+            if ($type = $fields->type) {
+                $data["--type"] = $type;
+            }
             if ($submit_count = $fields->submit_count) {
                 if ($submit_count % 100 > 0) {
                     return Action::danger("推送数量必须是100的倍数");
@@ -56,6 +60,11 @@ class SeoWorkAction extends Action
     {
         return [
             Text::make('更新站点内容数量（同步哈希云）', 'sync_count'),
+            Select::make('推送URL类型', 'type')->options([
+                'movie'   => '长视频',
+                'video'   => '短视频',
+                'article' => '文章',
+            ]),
             Text::make('推送URL数量（100的倍数）', 'submit_count'),
         ];
     }

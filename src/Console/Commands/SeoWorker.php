@@ -7,7 +7,6 @@ use Haxibiao\Cms\Movie;
 use Haxibiao\Cms\Site;
 use Haxibiao\Cms\Video;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -18,7 +17,7 @@ class SeoWorker extends Command
      *
      * @var string
      */
-    protected $signature = 'seo:work {--domain= : 指定操作站点域名} {--submit_count= : 自动提交收录数量,必须是100的倍数} {--sync_count= : 每日sync数据条数}';
+    protected $signature = 'seo:work {--domain= : 指定操作站点域名} {--submit_count= : 自动提交收录数量,必须是100的倍数} {--sync_count= : 每日sync数据条数} {--type= : 推送类型movie\video\article}';
 
     /**
      * The console command description.
@@ -53,10 +52,10 @@ class SeoWorker extends Command
         $this->sync_count   = $this->option('sync_count') ?? 5; //每日同步数据数量 默认5 暂支持article
 
         //都使用爱你城的article数据吧，目前内涵云上article只有懂代码和爱你城...后面其他站点添加内容进来再加这个option
-        Artisan::call("article:sync", [
-            "--domain" => "ainicheng.com",
-            "--num"    => $this->sync_count,
-        ]);
+        // Artisan::call("article:sync", [
+        //     "--domain" => "ainicheng.com",
+        //     "--num"    => $this->sync_count,
+        // ]);
 
         $qb = Site::whereNotNull('ziyuan_token');
         if ($domain = $this->option('domain') ?? null) {
@@ -76,8 +75,11 @@ class SeoWorker extends Command
     public function pushUrls($domain)
     {
         //从前往后优先推送这几个模块的内容,后面需要推送question、post等都可以加在这
-        $contents = ["article" => Article::class, "movie" => Movie::class, "video" => Video::class];
-
+        $contents = ["movie" => Movie::class, "article" => Article::class, "video" => Video::class];
+        $type     = $this->option('type') ?? null;
+        if ($type && $contents[$type]) {
+            $contents = [$type => $contents[$type]];
+        }
         //当前推送了多少url
         $push_count = 0;
 
