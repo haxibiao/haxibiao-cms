@@ -3,7 +3,7 @@
 namespace Haxibiao\Cms;
 
 use Haxibiao\Cms\Traits\Stickable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+Haxibiao\Breeze\Traits\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
