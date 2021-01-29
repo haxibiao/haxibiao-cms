@@ -7,6 +7,7 @@ use Haxibiao\Cms\Movie;
 use Haxibiao\Cms\Site;
 use Haxibiao\Cms\Video;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -29,7 +30,6 @@ class SeoWorker extends Command
     //百度api推送参数
     public $api = "http://data.zz.baidu.com/urls?site=";
     public $submit_count;
-    public $sync_count;
 
     /**
      * Create a new command instance.
@@ -49,13 +49,15 @@ class SeoWorker extends Command
     public function handle()
     {
         $this->submit_count = $this->option('submit_count') ?? 3000; //每日提交收录数量，默认3000,必须是100的倍数
-        $this->sync_count   = $this->option('sync_count') ?? 5; //每日同步数据数量 默认5 暂支持article
+        $this->sync_count   = $this->option('sync_count') ?? null; //每日同步数据数量 默认5 暂支持article
 
         //都使用爱你城的article数据吧，目前内涵云上article只有懂代码和爱你城...后面其他站点添加内容进来再加这个option
-        // Artisan::call("article:sync", [
-        //     "--domain" => "ainicheng.com",
-        //     "--num"    => $this->sync_count,
-        // ]);
+        if ($sync_count = $this->option('sync_count') ?? null) {
+            Artisan::call("article:sync", [
+                "--domain" => "ainicheng.com",
+                "--num"    => $sync_count,
+            ]);
+        }
 
         $qb = Site::whereNotNull('ziyuan_token');
         if ($domain = $this->option('domain') ?? null) {

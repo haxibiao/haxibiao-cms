@@ -59,7 +59,7 @@ class SeoWorkAction extends Action
     public function fields()
     {
         return [
-            Text::make('更新站点内容数量（同步哈希云）', 'sync_count'),
+            Text::make('更新站点内容数量（同步自哈希云）', 'sync_count'),
             Select::make('推送URL类型', 'type')->options([
                 'movie'   => '长视频',
                 'video'   => '短视频',
