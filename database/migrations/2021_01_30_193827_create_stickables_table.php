@@ -15,16 +15,15 @@ class CreateStickablesTable extends Migration
     {
         //重构自秀儿的sticks
         Schema::dropIfExists('sticks');
-        
-        if (Schema::hasTable('stickables')) {
-            return;
-        }
+        //重新整理置顶数据结构
+        Schema::dropIfExists('stickables');
+
         Schema::create('stickables', function (Blueprint $table) {
             $table->id();
 
             //morph item(stickable)
-            $table->string('item_type')->comment('类型：articles 图文｜videos 短视频｜movies 电影');
-            $table->string('item_id')->comment('内容id');
+            $table->string('stickable_type')->comment('类型：articles 图文｜videos 短视频｜movies 电影');
+            $table->string('stickable_id')->comment('内容id');
 
             //site has many stickable items by name = by page + by area ...
             $table->tinyInteger('site_id')->nullable()->comment('站群站点');

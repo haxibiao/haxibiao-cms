@@ -9,15 +9,18 @@ use Haxibiao\Cms\Post;
 use Haxibiao\Cms\Site;
 use Haxibiao\Cms\Stickable as StickableModel;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait Stickable
 {
     public static function bootStickable()
     {
         // 资源移除时候，自动移除置顶逻辑
-        static::deleted(function ($model) {
-            foreach ($model->related as $stickable) {
-                $stickable->delete();
+        static::deleting(function ($model) {
+            if ($model->forceDeleting) {
+                foreach ($model->related as $stickable) {
+                    $stickable->delete();
+                }
             }
         });
     }
@@ -110,9 +113,9 @@ trait Stickable
         return $this->hasMany(StickableModel::class);
     }
 
-    public function stickable($related)
+    public function stickable($related): MorphToMany
     {
-        return $this->morphedByMany($related, 'item', 'stickables')
+        return $this->morphedByMany($related, 'stickable')
             ->withPivot(['name', 'page', 'area'])
             ->withTimestamps();
     }
