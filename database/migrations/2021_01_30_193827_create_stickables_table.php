@@ -14,9 +14,11 @@ class CreateStickablesTable extends Migration
     public function up()
     {
         //重构自秀儿的sticks
-        Schema::dropIfExists('sticks');
+        // Schema::dropIfExists('sticks');
         //重新整理置顶数据结构
-        Schema::dropIfExists('stickables');
+        if (Schema::hasTable('stickables')) {
+            return;
+        }
 
         Schema::create('stickables', function (Blueprint $table) {
             $table->id();
