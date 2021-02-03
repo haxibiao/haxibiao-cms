@@ -129,7 +129,7 @@ EOD;
 
                 $data                  = $site->data ?? [];
                 $data['baidu_remain']  = $result->remain;
-                $data['baidu_success'] = ($site->$data['baidu_success'] ?? 0) + $result->success;
+                $data['baidu_success'] = ($data['baidu_success'] ?? 0) + $result->success;
                 $site->data            = $data;
                 $site->save();
             } else {
