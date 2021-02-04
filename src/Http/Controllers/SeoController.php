@@ -123,7 +123,7 @@ EOD;
             if (str_contains($result, "success")) {
                 $result = json_decode($result);
                 $info   = "今日剩余可推送URL条数: " . $result->remain;
-                $info .= "\n 今日成功推送URL条数: " . $result->success;
+                $info   = "\n 今日成功推送URL条数: " . $result->success;
 
                 //更新站点配额
 

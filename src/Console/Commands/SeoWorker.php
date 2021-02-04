@@ -7,7 +7,6 @@ use Haxibiao\Cms\Movie;
 use Haxibiao\Cms\Site;
 use Haxibiao\Cms\Video;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -28,7 +27,7 @@ class SeoWorker extends Command
     protected $description = 'seo work，自动收录，自动同步数据';
 
     //百度api推送参数
-    public $api = "http://data.zz.baidu.com/urls?site=";
+    public $api;
     public $submit_count;
 
     /**
@@ -52,25 +51,28 @@ class SeoWorker extends Command
         $this->sync_count   = $this->option('sync_count') ?? null; //每日同步数据数量 默认5 暂支持article
 
         //都使用爱你城的article数据吧，目前内涵云上article只有懂代码和爱你城...后面其他站点添加内容进来再加这个option
-        if ($sync_count = $this->option('sync_count') ?? null) {
-            Artisan::call("article:sync", [
-                "--domain" => "ainicheng.com",
-                "--num"    => $sync_count,
-            ]);
-        }
+        // if ($sync_count = $this->option('sync_count') ?? null) {
+        //     Artisan::call("article:sync", [
+        //         "--domain" => "ainicheng.com",
+        //         "--num"    => $sync_count,
+        //     ]);
+        // }
 
-        $qb = Site::active()->whereNotNull('ziyuan_token');
+        $qb = Site::whereNotNull('ziyuan_token');
         if ($domain = $this->option('domain') ?? null) {
             $qb->where('domain', $domain);
         }
 
         $qb->chunkById(100, function ($sites) {
             foreach ($sites as $site) {
-                //各个站点提交的百度api
-                $this->api = $this->api . $site->domain . '&token=' . $site->ziyuan_token;
-
-                //提交收录
-                $this->pushUrls($site);
+                //清空昨天的data数据
+                $site->update(['data' => null]);
+                if ($site->domain && $site->ziyuan_token) {
+                    //各个站点提交的百度api
+                    $this->api = "http://data.zz.baidu.com/urls?site=" . $site->domain . '&token=' . $site->ziyuan_token;
+                    //提交收录
+                    $this->pushUrls($site);
+                }
             }
         });
     }
@@ -106,17 +108,20 @@ class SeoWorker extends Command
                     $result = pushSeoUrl($urls, $this->api);
                     if (str_contains($result, "success")) {
                         $result = json_decode($result);
+                        $push_count += 100;
 
                         //记录推送数据
                         $data                  = $site->data ?? [];
                         $data['baidu_remain']  = $result->remain;
-                        $data['baidu_success'] = ($site->$data['baidu_success'] ?? 0) + $result->success;
+                        $data['baidu_success'] = ($data['baidu_success'] ?? 0) + $result->success;
                         $site->data            = $data;
                         $site->save();
                         Log::info($domain . "剩余可推送URL条数:" . $result->remain);
+                    } else {
+                        Log::info($domain . "推送失败,退出");
+                        return false;
                     }
 
-                    $push_count += 100;
                     //达到数量，退出
                     if ($push_count >= $this->submit_count) {
                         Log::info($domain . "推送完成,退出");
