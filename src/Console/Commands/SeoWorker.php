@@ -59,7 +59,7 @@ class SeoWorker extends Command
             ]);
         }
 
-        $qb = Site::whereNotNull('ziyuan_token');
+        $qb = Site::active()->whereNotNull('ziyuan_token');
         if ($domain = $this->option('domain') ?? null) {
             $qb->where('domain', $domain);
         }
@@ -68,20 +68,23 @@ class SeoWorker extends Command
             foreach ($sites as $site) {
                 //各个站点提交的百度api
                 $this->api = $this->api . $site->domain . '&token=' . $site->ziyuan_token;
+
                 //提交收录
-                $this->pushUrls($site->domain);
+                $this->pushUrls($site);
             }
         });
     }
 
-    public function pushUrls($domain)
+    public function pushUrls($site)
     {
+        $domain = $site->domain;
         //从前往后优先推送这几个模块的内容,后面需要推送question、post等都可以加在这
         $contents = ["movie" => Movie::class, "article" => Article::class, "video" => Video::class];
         $type     = $this->option('type') ?? null;
         if ($type && $contents[$type]) {
             $contents = [$type => $contents[$type]];
         }
+
         //当前推送了多少url
         $push_count = 0;
 
@@ -91,7 +94,7 @@ class SeoWorker extends Command
             $last_time_id = Cache::get($cache_key) ?? 1;
 
             $value::query()->where('id', '>=', $last_time_id)
-                ->chunkById(100, function ($items) use ($key, $domain, $push_count, $cache_key) {
+                ->chunkById(100, function ($items) use ($key, $domain, &$push_count, $cache_key, $site) {
                     //整理要推送的url数组（100一组）
                     foreach ($items as $item) {
                         $urls[]      = $domain . "/{$key}/" . $item->id;
@@ -103,6 +106,13 @@ class SeoWorker extends Command
                     $result = pushSeoUrl($urls, $this->api);
                     if (str_contains($result, "success")) {
                         $result = json_decode($result);
+
+                        //记录推送数据
+                        $data                  = $site->data ?? [];
+                        $data['baidu_remain']  = $result->remain;
+                        $data['baidu_success'] = ($site->$data['baidu_success'] ?? 0) + $result->success;
+                        $site->data            = $data;
+                        $site->save();
                         Log::info($domain . "剩余可推送URL条数:" . $result->remain);
                     }
 
@@ -110,7 +120,7 @@ class SeoWorker extends Command
                     //达到数量，退出
                     if ($push_count >= $this->submit_count) {
                         Log::info($domain . "推送完成,退出");
-                        exit;
+                        return false;
                     }
                 });
         }
