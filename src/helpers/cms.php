@@ -147,10 +147,10 @@ function cms_icp_info()
 		$policeCode = seo_value('备案', '公安网备号');
         $html = [];
         $html [] = "<div>" ;
-        $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/ rel=\"nofollow\" \">{$copyRight}</a><br>" ;
-        $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/  rel=\"nofollow\" \">{$recordCode}";
+        $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\">{$copyRight}</a><br>" ;
+        $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\"  rel=\"nofollow\">{$recordCode}";
         $html [] = "邮箱：support@beian.gov.cn</a><br>";
-        $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/ rel=\"nofollow\" \">";
+        $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\" >";
         $html [] = "<img src=\"http://cos.haxibiao.com/images/yyzz.png\" rel=\"nofollow\" alt=\"电子安全监督\">";
         $html [] = "{$policeCode}";
         $html [] = "</a><br>";
@@ -173,11 +173,11 @@ function cms_icp_info()
 	$policeCode = data_get($icpInfo,'police_code');
     $html = [];
     $html [] = "<div>" ;
-    $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/ rel=\"nofollow\" \">{$copyRight}</a><br>" ;
-    $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/  rel=\"nofollow\" \">{$recordCode}";
+    $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\">{$copyRight}</a><br>" ;
+    $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\"  rel=\"nofollow\">{$recordCode}";
     $html [] = "邮箱：support@beian.gov.cn</a><br>";
 	if($policeCode){
-		$html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/ rel=\"nofollow\" \">";
+		$html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\">";
 		$html [] = "<img src=\"http://cos.haxibiao.com/images/yyzz.png\" rel=\"nofollow\" alt=\"电子安全监督\">";
 		$html [] = "{$policeCode}";
 		$html [] = "</a><br>";
