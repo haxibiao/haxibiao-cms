@@ -3,11 +3,11 @@
 namespace Haxibiao\Cms\Nova;
 
 use App\Nova\Resource;
+use Haxibiao\Cms\Nova\Metrics\BaiduIncludeTrend;
 use Haxibiao\Cms\Nova\Metrics\SiteSpiderPartition;
 use Haxibiao\Cms\Nova\Metrics\SiteTrafficPartition;
 use Haxibiao\Cms\Nova\Metrics\SpiderPartition;
 use Haxibiao\Cms\Nova\Metrics\SpiderTrend;
-use Haxibiao\Cms\Nova\Metrics\BaiduIncludeTrend;
 use Haxibiao\Cms\Nova\Metrics\TrafficPartition;
 use Haxibiao\Cms\Nova\Metrics\TrafficTrend;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ use Laravel\Nova\Fields\Text;
 
 class Traffic extends Resource
 {
-    public static $group = 'CMS站群';
+    public static $group = 'SEO中心';
     public static $model = 'App\Traffic';
     public static function label()
     {

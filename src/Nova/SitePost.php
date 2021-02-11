@@ -17,7 +17,7 @@ use Laravel\Nova\Resource;
 
 class SitePost extends Resource
 {
-    public static $group = "CMS站群";
+    public static $group          = "SEO中心";
     public static $perPageOptions = [25, 50, 100, 500, 1000];
     public static function label()
     {

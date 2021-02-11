@@ -10,21 +10,18 @@ use Laravel\Nova\Resource;
 
 class Stickable extends Resource
 {
-
     public static $model = 'App\Stickable';
-
     public static $title = 'id';
 
-    public static $group = '系统管理';
+    public static $group = 'SEO中心';
+    public static function label()
+    {
+        return "置顶";
+    }
 
     public static $search = [
         'id', 'name',
     ];
-
-    public static function label()
-    {
-        return "运营置顶";
-    }
 
     public function fields(Request $request)
     {

@@ -18,7 +18,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Site extends Resource
 {
-    public static $group = 'CMS站群';
+    public static $group = 'SEO中心';
     public static $model = 'App\Site';
     public static function label()
     {
@@ -53,12 +53,12 @@ class Site extends Resource
             })->asHtml(),
             Text::make('模板主题', 'theme'),
             Boolean::make('活跃', 'active'),
-			Select::make('备案信息模版', 'company')->options(
-				array_combine(
-					array_keys(config('cms.icp')),
-					array_keys(config('cms.icp'))
-				)
-			),
+            Select::make('备案信息模版', 'company')->options(
+                array_combine(
+                    array_keys(config('cms.icp')),
+                    array_keys(config('cms.icp'))
+                )
+            ),
             Text::make('百度Token', 'ziyuan_token')->hideFromIndex(),
             Text::make('神马Token', 'shenma_token')->hideFromIndex(),
             Text::make('神马站长邮箱', 'shenma_owner_email')->hideFromIndex()->placeholder('自动提交MIP数据到神马需要'),

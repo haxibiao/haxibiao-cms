@@ -19,12 +19,12 @@ use Laravel\Nova\Resource;
 
 class SiteArticle extends Resource
 {
-    public static $group  = 'CMS站群';
+    public static $group          = 'SEO中心';
     public static $perPageOptions = [25, 50, 100, 500, 1000];
-    public static $model  = 'Haxibiao\Cms\Article';
-    public static $title  = 'title';
-    public static $with   = ['user', 'category', 'video'];
-    public static $search = [
+    public static $model          = 'Haxibiao\Cms\Article';
+    public static $title          = 'title';
+    public static $with           = ['user', 'category', 'video'];
+    public static $search         = [
         'id', 'title',
     ];
     public static function label()
