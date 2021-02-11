@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphedByMany;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -52,7 +53,12 @@ class Site extends Resource
             })->asHtml(),
             Text::make('模板主题', 'theme'),
             Boolean::make('活跃', 'active'),
-            Text::make('备案', 'icp')->hideFromIndex(),
+			Select::make('备案信息模版', 'company')->options(
+				array_combine(
+					array_keys(config('cms.icp')),
+					array_keys(config('cms.icp'))
+				)
+			),
             Text::make('百度Token', 'ziyuan_token')->hideFromIndex(),
             Text::make('神马Token', 'shenma_token')->hideFromIndex(),
             Text::make('神马站长邮箱', 'shenma_owner_email')->hideFromIndex()->placeholder('自动提交MIP数据到神马需要'),

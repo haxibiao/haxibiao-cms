@@ -37,6 +37,8 @@ class CmsServiceProvider extends ServiceProvider
             SeoWorker::class,
             CmsUpdate::class,
         ]);
+
+		$this->mergeConfigFrom(__DIR__ . '/../config/cms.php', 'cms');
     }
 
     /**

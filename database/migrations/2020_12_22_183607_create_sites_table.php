@@ -29,6 +29,7 @@ class CreateSitesTable extends Migration
             $table->json('data')->nullable()->comment('json数据 附加信息');
             $table->string('icp')->nullable()->comment('icp备案信息');
             $table->boolean('active')->nullable()->comment('是否激活');
+			$table->string('company')->nullable()->comment('公司实体');
 
             $table->string('owner', 20)->nullable()->comment('站长');
             $table->string('ziyuan_token')->nullable()->comment('百度资源站长提交收录的token');
