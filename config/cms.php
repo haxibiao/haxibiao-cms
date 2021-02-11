@@ -19,6 +19,7 @@ return [
 		'深圳哈希坊' =>[
 			'copyright' => 'Copyright ©2021 哈希坊（深圳）科技有限责任公司 All Rights Reserved',
 			'record_code' => '粤ICP备19147077号',
+			'police_code' => '粤公安网备 44030302001429号'
 		],
 		'成都哈希坊' =>[
 			'copyright' => 'Copyright ©2021 哈希坊（成都）科技有限责任公司 All Rights Reserved',
