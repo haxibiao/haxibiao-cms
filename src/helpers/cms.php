@@ -142,47 +142,47 @@ function cms_icp_info()
 
     // 单站模式
     if (!config('cms.multi_domains')) {
-        $copyRight = seo_value('备案', 'copyright');
+        $copyRight  = seo_value('备案', 'copyright');
         $recordCode = seo_value('备案', '备案号');
-		$policeCode = seo_value('备案', '公安网备号');
-        $html = [];
-        $html [] = "<div>" ;
-        $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\">{$copyRight}</a><br>" ;
-        $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\"  rel=\"nofollow\">{$recordCode}";
-        $html [] = "邮箱：support@beian.gov.cn</a><br>";
-        $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\" >";
-        $html [] = "<img src=\"http://cos.haxibiao.com/images/yyzz.png\" rel=\"nofollow\" alt=\"电子安全监督\">";
-        $html [] = "{$policeCode}";
-        $html [] = "</a><br>";
-        $html [] = "</div>" ;
+        $policeCode = seo_value('备案', '公安网备号');
+        $html       = [];
+        $html[]     = "<div>";
+        $html[]     = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\">{$copyRight}</a><br>";
+        $html[]     = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\"  rel=\"nofollow\">{$recordCode}";
+        $html[]     = "邮箱：support@beian.gov.cn</a><br>";
+        $html[]     = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\" >";
+        $html[]     = "<img src=\"http://cos.haxibiao.com/images/yyzz.png\" rel=\"nofollow\" alt=\"电子安全监督\">";
+        $html[]     = "{$policeCode}";
+        $html[]     = "</a><br>";
+        $html[]     = "</div>";
         return implode(PHP_EOL, $html);
     }
-    $site = cms_get_site();
-    $company  = data_get($site,'company');
+    $site    = cms_get_site();
+    $company = data_get($site, 'company');
     // 未配置ICP信息
-    if(!$company){
+    if (!$company) {
         return;
     }
-	$infoList = config('cms.icp');
-	$icpInfo = data_get($infoList,$company);
-    if(!$icpInfo){
-		return;
-	}
-	$copyRight = data_get($icpInfo,'copyright');
-	$recordCode = data_get($icpInfo,'record_code');
-	$policeCode = data_get($icpInfo,'police_code');
-    $html = [];
-    $html [] = "<div>" ;
-    $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\">{$copyRight}</a><br>" ;
-    $html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\"  rel=\"nofollow\">{$recordCode}";
-    $html [] = "邮箱：support@beian.gov.cn</a><br>";
-	if($policeCode){
-		$html [] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\">";
-		$html [] = "<img src=\"http://cos.haxibiao.com/images/yyzz.png\" rel=\"nofollow\" alt=\"电子安全监督\">";
-		$html [] = "{$policeCode}";
-		$html [] = "</a><br>";
-	}
-    $html [] = "</div>" ;
+    $infoList = config('cms.icp');
+    $icpInfo  = data_get($infoList, $company);
+    if (!$icpInfo) {
+        return;
+    }
+    $copyRight  = data_get($icpInfo, 'copyright');
+    $recordCode = data_get($icpInfo, 'record_code');
+    $policeCode = data_get($icpInfo, 'police_code');
+    $html       = [];
+    $html[]     = "<div>";
+    $html[]     = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\">{$copyRight}</a><br>";
+    $html[]     = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\"  rel=\"nofollow\">{$recordCode}";
+    $html[]     = "邮箱：support@beian.gov.cn</a><br>";
+    if ($policeCode) {
+        $html[] = "<a target=\"_blank\" href=\"http://beian.miit.gov.cn/\" rel=\"nofollow\">";
+        $html[] = "<img src=\"http://cos.haxibiao.com/images/yyzz.png\" rel=\"nofollow\" alt=\"电子安全监督\">";
+        $html[] = "{$policeCode}";
+        $html[] = "</a><br>";
+    }
+    $html[] = "</div>";
     return implode(PHP_EOL, $html);
 }
 
@@ -285,7 +285,7 @@ function cmsTopCategories($top = 7)
 
 /**
  * 首页的文章列表(站群)
- * @return collection([article]) 包含分页信息和移动ＶＵＥ等优化的文章列表
+ * @return collection([\App\Article]) 包含分页信息和移动ＶＵＥ等优化的文章列表
  */
 function cmsTopArticles()
 {

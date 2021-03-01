@@ -2,12 +2,12 @@
 
 namespace Haxibiao\Cms\Traits;
 
-use Haxibiao\Cms\Article;
-use Haxibiao\Cms\Category;
-use Haxibiao\Cms\Movie;
-use Haxibiao\Cms\Post;
-use Haxibiao\Cms\Site;
-use Haxibiao\Cms\Stickable as StickableModel;
+use App\Article;
+use App\Category;
+use App\Movie;
+use App\Post;
+use App\Site;
+use App\Stickable as StickableModel;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
